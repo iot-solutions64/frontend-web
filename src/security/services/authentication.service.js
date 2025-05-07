@@ -10,7 +10,7 @@ export class AuthenticationService extends BaseService {
         const user = {
             "username": username,
             "password": password,
-            "roles": "ROLE_USER"
+            "roles": ["ROLE_USER"]
         };
         return axios.post(`${this.endpointPath()}/sign-up`, user);
     }

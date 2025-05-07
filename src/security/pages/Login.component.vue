@@ -39,7 +39,7 @@ const login = async () => {
       <pv-card class="login-card" style="width: 550px; height: 560px;">
         <template #title>
           <h3>Iniciar Sesión</h3>
-          <p v-if="error" style="color: red;">Usuario o contraseña incorrectos</p>
+          <p v-if="error">Usuario o contraseña incorrectos</p>
         </template>
         <template #content>
           <div class="login-form">
@@ -67,7 +67,7 @@ const login = async () => {
               </pv-ifta-label>
             </div>
             <pv-button @click="login" label="Acceder" style="margin: 0 auto; width: 60%;" />
-            <router-link to="/register"
+            <router-link to="/signup"
                          style="text-decoration: none; color:var(--text-color);">
               ¿No tienes cuenta? <u>Regístrate aquí</u>
             </router-link>
@@ -110,6 +110,7 @@ h3 {
 p {
   text-align: center;
   font-weight: 400;
+  color: var(--error-color);
 }
 
 .login-form {
