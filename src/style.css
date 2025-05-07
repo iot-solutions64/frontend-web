@@ -1,0 +1,50 @@
+:root {
+  --primary-color: #1856C3;
+  --primary-color-dark: #092C4C;
+  --success-color: #27AE60;
+  --error-color: #F84343;
+  --text-color: black;
+  --background-color: #f0f0f0;
+  --other-color: #F2E2A8;
+  --other-second-color: #5392FF;
+  --other-third-color: #136700;
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Roboto, sans-serif;
+}
+
+#app{
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 56px;
+}
+
+h2 {
+  font-size: 48px;
+}
+
+h3 {
+  font-size: 40px;
+}
+
+h4 {
+    font-size: 32px;
+}
+
+h5 {
+  font-size: 24px;
+}
+
+h6 {
+  font-size: 20px;
+}
+
+p {
+  font-size: 18px;
+}
