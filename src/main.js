@@ -10,6 +10,11 @@ import router from "./shared/router/index.js";
 // PrimeVue components
 import Button from 'primevue/button';
 import Menu from 'primevue/menu';
+import Card from 'primevue/card';
+import IftaLabel from 'primevue/iftalabel';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import InputText from 'primevue/inputtext';
 
 const blue = definePreset(Aura, {
     semantic: {
@@ -71,4 +76,9 @@ app.use(store)
 app.use(router)
 app.component('pv-button', Button)
 app.component('pv-menu', Menu)
+app.component('pv-card', Card)
+app.component('pv-ifta-label', IftaLabel)
+app.component('pv-icon-field', IconField)
+app.component('pv-input-icon', InputIcon)
+app.component('pv-input-text', InputText)
 app.mount('#app')

@@ -22,7 +22,9 @@ const items = [
   {
     label: 'Cerrar sesión',
     icon: 'pi pi-sign-out',
-    command: () => store.dispatch('logout')
+    command: () => { store.dispatch('logout').then(
+      () => { router.push('/login') }
+    ) }
   }
 ]
 
