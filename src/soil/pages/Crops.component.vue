@@ -3,10 +3,12 @@ import { ref, onMounted } from 'vue';
 import CropTable from '../components/CropTable.component.vue';
 import AddButton from '../components/AddButton.component.vue';
 import AddCropDialog from '../components/AddCropDialog.component.vue';
+import DeleteCropDialog from '../components/DeleteCropDialog.component.vue';
 
-// Simulación de servicio o datos
 const items = ref([]);
-const showDialog = ref(false);
+const cropToDelete = ref(null);
+const showAddDialog = ref(false);
+const showDeleteDialog = ref(false);
 
 onMounted(() => {
   // TODO: Implement the logic to fetch items from a service
@@ -26,13 +28,18 @@ function editItem(item) {
   console.log('Editar:', item);
 }
 
-function deleteItem(item) {
-  // TODO: Implement the logic to delete the item
-  console.log('Eliminar:', item);
+function openDeleteItemDialog(item) {
+  cropToDelete.value = item;
+  showDeleteDialog.value = true;
 }
 
-function addItem() {
-  showDialog.value = true;
+function deleteItem(item) {
+  // TODO: Implement the logic to delete the item
+  items.value = items.value.filter(i => i.id !== item.id);
+}
+
+function openAddItemDialog() {
+  showAddDialog.value = true;
 }
 
 function saveItem(newItem) {
@@ -49,11 +56,14 @@ function saveItem(newItem) {
       :items="items"
       @view="viewItem"
       @edit="editItem"
-      @delete="deleteItem"
+      @delete="openDeleteItemDialog"
   />
-  <AddCropDialog v-model:visible="showDialog" @save="saveItem" />
+  <AddCropDialog v-model:visible="showAddDialog" @save="saveItem" />
+  <DeleteCropDialog v-model:visible="showDeleteDialog"
+                    :item="cropToDelete"
+                    @delete="deleteItem" />
   <pv-toast position="bottom-right"/>
-  <AddButton @click="addItem"/>
+  <AddButton @click="openAddItemDialog"/>
 </template>
 
 <style scoped>
