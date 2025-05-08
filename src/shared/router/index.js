@@ -5,6 +5,7 @@ import SignUpComponent from '../../security/pages/SignUp.component.vue'
 import LoginComponent from '../../security/pages/Login.component.vue'
 import WaterManagementComponent from '../../irrigation/pages/WaterManagement.component.vue'
 import SystemComponent from '../../system/pages/System.component.vue'
+import CropDetailComponent from '../../soil/pages/CropDetail.component.vue'
 
 const routes = [
     { path: '/', redirect: '/crops' },
@@ -12,6 +13,7 @@ const routes = [
     { path: '/login', component: LoginComponent },
     { path: '/signup', component: SignUpComponent },
     { path: '/crops', component: CropsComponent, meta: { requiresAuth: true } },
+    { path: '/crops/:id', component: CropDetailComponent, meta: { requiresAuth: true } },
     { path: '/water', component: WaterManagementComponent, meta: { requiresAuth: true } },
     { path: '/system', component: SystemComponent, meta: { requiresAuth: true }}
 ]
