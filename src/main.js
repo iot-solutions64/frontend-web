@@ -22,6 +22,7 @@ import Checkbox from 'primevue/checkbox';
 import Dialog from 'primevue/dialog';
 import InputNumber from 'primevue/inputnumber';
 import Toast from 'primevue/toast';
+import Chart from 'primevue/chart';
 // PrimeVue services
 import ToastService from 'primevue/toastservice';
 
@@ -96,5 +97,6 @@ app.component('pv-checkbox', Checkbox)
 app.component('pv-dialog', Dialog)
 app.component('pv-input-number', InputNumber)
 app.component('pv-toast', Toast)
+app.component('pv-chart', Chart)
 app.use(ToastService)
 app.mount('#app')
