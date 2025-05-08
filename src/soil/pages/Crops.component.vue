@@ -5,6 +5,7 @@ import AddButton from '../components/AddButton.component.vue';
 import AddCropDialog from '../components/AddCropDialog.component.vue';
 import DeleteCropDialog from '../components/DeleteCropDialog.component.vue';
 import EditCropDialog from '../components/EditCropDialog.component.vue';
+import router from "../../shared/router/index.js";
 
 const items = ref([]);
 const showAddDialog = ref(false);
@@ -22,8 +23,9 @@ onMounted(() => {
 });
 
 function viewItem(item) {
-  // TODO: Implement the logic to view the item in detail
-  console.log('Ver:', item);
+  router.push(`/crops/${item.id}`);
+}
+
 function openEditItemDialog(item) {
   cropToEdit.value = item;
   showEditDialog.value = true;
