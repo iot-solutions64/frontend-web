@@ -19,6 +19,11 @@ import InputText from 'primevue/inputtext';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Checkbox from 'primevue/checkbox';
+import Dialog from 'primevue/dialog';
+import InputNumber from 'primevue/inputnumber';
+import Toast from 'primevue/toast';
+// PrimeVue services
+import ToastService from 'primevue/toastservice';
 
 const blue = definePreset(Aura, {
     semantic: {
@@ -88,4 +93,8 @@ app.component('pv-input-text', InputText)
 app.component('pv-data-table', DataTable)
 app.component('pv-column', Column)
 app.component('pv-checkbox', Checkbox)
+app.component('pv-dialog', Dialog)
+app.component('pv-input-number', InputNumber)
+app.component('pv-toast', Toast)
+app.use(ToastService)
 app.mount('#app')
