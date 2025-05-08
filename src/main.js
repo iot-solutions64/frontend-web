@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import './style.css'
 import 'primeicons/primeicons.css';
+import 'primeflex/primeflex.css';
 import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
@@ -15,6 +16,9 @@ import IftaLabel from 'primevue/iftalabel';
 import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import InputText from 'primevue/inputtext';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Checkbox from 'primevue/checkbox';
 
 const blue = definePreset(Aura, {
     semantic: {
@@ -81,4 +85,7 @@ app.component('pv-ifta-label', IftaLabel)
 app.component('pv-icon-field', IconField)
 app.component('pv-input-icon', InputIcon)
 app.component('pv-input-text', InputText)
+app.component('pv-data-table', DataTable)
+app.component('pv-column', Column)
+app.component('pv-checkbox', Checkbox)
 app.mount('#app')
