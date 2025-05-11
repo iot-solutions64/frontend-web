@@ -7,6 +7,7 @@ import WaterManagementComponent from '../../irrigation/pages/WaterManagement.com
 import SystemComponent from '../../system/pages/System.component.vue'
 import CropDetailComponent from '../../soil/pages/CropDetail.component.vue'
 import WaterGraph from '../../irrigation/pages/WaterGraph.component.vue'
+import WaterTanks from '../../irrigation/pages/WaterTanks.component.vue'
 
 const routes = [
     { path: '/', redirect: '/crops' },
@@ -17,6 +18,7 @@ const routes = [
     { path: '/crops/:id', component: CropDetailComponent, meta: { requiresAuth: true } },
     { path: '/water', component: WaterManagementComponent, meta: { requiresAuth: true } },
     { path: '/water/graph', component: WaterGraph, meta: { requiresAuth: true } },
+    { path: '/tanks', component: WaterTanks, meta: { requiresAuth: true } },
     { path: '/system', component: SystemComponent, meta: { requiresAuth: true }}
 ]
 

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import CropTable from '../components/CropTable.component.vue';
-import AddButton from '../components/AddButton.component.vue';
+import AddButton from '../../shared/components/AddButton.component.vue';
 import AddCropDialog from '../components/AddCropDialog.component.vue';
 import DeleteCropDialog from '../components/DeleteCropDialog.component.vue';
 import EditCropDialog from '../components/EditCropDialog.component.vue';
