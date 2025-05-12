@@ -5,6 +5,7 @@ import { Temperature } from "../models/temperature.entity";
 import { Humidity } from "../models/humidity.entity";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";
 import {TEMPERATURE_SUGGESTIONS} from "../constants/temperature-suggestions.constant";
+import {System} from "../../system/models/system.entity";
 
 const cropId = ref(0);
 const temperature = ref(new Temperature());
@@ -34,7 +35,9 @@ function goToCompleteHistory() {
 }
 
 function goToCropSystem() {
-  router.push(`/crops/${cropId.value}/system`);
+  // TODO: Implement the logic to fetch system data from a service
+  const system = new System(1, "Sistema de zanahorias", 1, 70, []);
+  router.push(`/systems/${system.id}`);
 }
 </script>
 

@@ -12,6 +12,7 @@ import RecommendedActionsComponent from '../../soil/pages/RecommendedActions.com
 import SystemDetailComponent from '../../system/pages/SystemDetail.component.vue'
 import AddSystemComponent from '../../system/pages/AddSystem.component.vue'
 import EditSystemComponent from '../../system/pages/EditSystem.component.vue'
+import CropHistoryComponent from '../../soil/pages/CropHistory.component.vue'
 
 const routes = [
     { path: '/', redirect: '/crops' },
@@ -20,6 +21,8 @@ const routes = [
     { path: '/signup', component: SignUpComponent },
     { path: '/crops', component: CropsComponent, meta: { requiresAuth: true } },
     { path: '/crops/:id', component: CropDetailComponent, meta: { requiresAuth: true } },
+    { path: '/crops/:id/short-history', component: CropHistoryComponent, meta: { requiresAuth: true } },
+    { path: '/crops/:id/history', component: CropHistoryComponent, meta: { requiresAuth: true } },
     { path: '/temperature/:id/actions', component: RecommendedActionsComponent, meta: { requiresAuth: true } },
     { path: '/humidity/:id/actions', component: RecommendedActionsComponent, meta: { requiresAuth: true } },
     { path: '/water', component: WaterManagementComponent, meta: { requiresAuth: true } },
