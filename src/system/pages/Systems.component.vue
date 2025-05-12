@@ -2,18 +2,16 @@
 import {onMounted, ref} from "vue";
 import {System} from "../models/system.entity";
 import {Subsystem} from "../models/subsystem.entity";
-import {Crop} from "../../soil/models/crop.entity";
 import router from "../../shared/router/index.js";
 import AddButton from "../../shared/components/AddButton.component.vue";
 
 const systems = ref([]);
-const crops = ref([]);
-
 onMounted(() => {
   // TODO: Fetch systems from the API
   systems.value = [
       new System(
           1,
+          "Sistema de zanahorias",
           1,
           70,
           [
@@ -25,6 +23,7 @@ onMounted(() => {
       ),
       new System(
           2,
+          "Sistema de papas",
           2,
           40,
           [
@@ -35,11 +34,6 @@ onMounted(() => {
           ]
       )
   ]
-  // TODO: Get the name of the crop from the API
-  crops.value = [
-    new Crop(1, 'Recinto A', 1000, true, 1),
-    new Crop(2, 'Recinto B', 800, false, 1),
-  ];
 });
 
 function goToSystem(id: number) {
@@ -61,7 +55,7 @@ function goToAddSystem() {
 <template>
   <h2 class="text-center mb-2">Sistemas</h2>
   <div v-for="(system, index) in systems" :key="index" class="text-center flex flex-column">
-    <h4 class="m-5">Sistema de {{ crops.find(c => c.id === system.cropId)?.name }}</h4>
+    <h4 class="m-5">{{ system.name }}</h4>
     <div class="flex flex-row flex-wrap gap-5 justify-content-center align-items-center ">
       <table class="w-3" style="border-collapse: collapse;">
         <thead>

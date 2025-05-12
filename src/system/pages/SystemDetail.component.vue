@@ -3,12 +3,10 @@ import {onMounted, ref} from "vue";
 import {System} from "../models/system.entity";
 import router from "../../shared/router/index.js";
 import {Subsystem} from "../models/subsystem.entity";
-import {Crop} from "../../soil/models/crop.entity";
 import DeleteSystemDialog from "../components/DeleteSystemDialog.component.vue";
 
 const systemId = ref(0);
 const system = ref(new System());
-const crop = ref(new Crop());
 const showDeleteDialog = ref(false);
 
 onMounted(() => {
@@ -16,6 +14,7 @@ onMounted(() => {
   // TODO: Implement the logic to fetch system data from a service
   system.value = new System(
     systemId.value,
+    "Sistema de zanahorias",
     1,
     70,
     [
@@ -25,8 +24,6 @@ onMounted(() => {
       new Subsystem(4, "Cantidad de agua", 1000, "Insuficiente", false),
     ]
   );
-  // TODO: Implement the logic to fetch crop data from a service
-  crop.value = new Crop(1, 'Recinto A', 1000, true, 1);
 });
 
 function getBatteryColor(percentage: number) {
@@ -58,7 +55,7 @@ function goToEditSystem(id: number) {
                @click="router.back()"
                aria-label="Volver"
                class="mr-2"/>
-    <h3 class="m-0 text-center flex-grow-1">Sistema de {{crop.name}}</h3>
+    <h3 class="m-0 text-center flex-grow-1">{{ system.name }}</h3>
   </div>
   <div class="flex flex-column gap-5 justify-content-center align-items-center mb-5">
     <pv-card>
