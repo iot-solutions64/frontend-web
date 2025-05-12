@@ -72,26 +72,28 @@ function goToEditSystem(id: number) {
         </div>
       </template>
     </pv-card>
-    <table class="w-3" style="border-collapse: collapse;">
-      <thead>
-      <tr>
-        <th class="table-header">Sistema</th>
-        <th class="table-header">Lectura</th>
-        <th class="table-header">Estado</th>
-        <th class="table-header">Activado</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(sub, idx) in system.subsystems" :key="idx">
-        <td class="p-2">{{ sub.name }}</td>
-        <td class="p-2">{{ sub.value ?? 'No aplica' }}</td>
-        <td class="p-2">{{ sub.status }}</td>
-        <td class="p-2 text-center">
-          <pv-checkbox v-model="sub.active" binary disabled/>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="w-full overflow-x-auto">
+      <table class="mx-auto" style="border-collapse: collapse; min-width: 30rem;">
+        <thead>
+        <tr>
+          <th class="table-header">Sistema</th>
+          <th class="table-header">Lectura</th>
+          <th class="table-header">Estado</th>
+          <th class="table-header">Activado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(sub, idx) in system.subsystems" :key="idx">
+          <td class="p-2">{{ sub.name }}</td>
+          <td class="p-2">{{ sub.value ?? 'No aplica' }}</td>
+          <td class="p-2">{{ sub.status }}</td>
+          <td class="p-2 text-center">
+            <pv-checkbox v-model="sub.active" binary disabled/>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="flex gap-3 justify-content-center align-items-center">
     <pv-button label="Editar" icon="pi pi-pencil" class="w-10rem" @click="goToEditSystem(systemId)"/>

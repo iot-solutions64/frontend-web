@@ -55,34 +55,36 @@ function saveChanges() {
                class="mr-2"/>
   </div>
   <div class="flex flex-column gap-5 justify-content-center align-items-center mb-5">
-    <div class="flex flex-column w-5 mx-auto text-center">
+    <div class="flex flex-column w-10 md:w-8 lg:w-5 mx-auto text-center">
       <label for="name" class="name-label mb-2">Nombre</label>
       <pv-input-text class="h-3rem text-center" id="name" v-model="name" />
     </div>
-    <table class="w-4 m-5" style="border-collapse: collapse;">
-      <thead>
-      <tr>
-        <th class="table-header">Sistema</th>
-        <th class="table-header">Lectura</th>
-        <th class="table-header">Estado</th>
-        <th class="table-header">Activado</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(sub, idx) in system.subsystems" :key="idx">
-        <td class="p-3">{{ sub.name }}</td>
-        <td class="p-3">{{ sub.value ?? 'No aplica' }}</td>
-        <td class="p-3">{{ sub.status }}</td>
-        <td class="p-3 text-center">
-          <pv-checkbox v-model="sub.active" binary/>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="w-full overflow-x-auto">
+      <table class="mx-auto" style="border-collapse: collapse; min-width: 30rem;">
+        <thead>
+        <tr>
+          <th class="table-header">Sistema</th>
+          <th class="table-header">Lectura</th>
+          <th class="table-header">Estado</th>
+          <th class="table-header">Activado</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(sub, idx) in system.subsystems" :key="idx">
+          <td class="p-3">{{ sub.name }}</td>
+          <td class="p-3">{{ sub.value ?? 'No aplica' }}</td>
+          <td class="p-3">{{ sub.status }}</td>
+          <td class="p-3 text-center">
+            <pv-checkbox v-model="sub.active" binary/>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="flex gap-3 justify-content-center align-items-center">
-    <pv-button label="Cancelar" severity="danger" icon="pi pi-trash" class="w-15rem" @click="router.back()"/>
-    <pv-button label="Guardar cambios" icon="pi pi-pencil" class="w-15rem" @click="saveChanges"/>
+    <pv-button label="Cancelar" severity="danger" class="w-15rem" @click="router.back()"/>
+    <pv-button label="Guardar cambios" class="w-15rem" @click="saveChanges"/>
   </div>
 </template>
 
