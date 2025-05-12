@@ -26,6 +26,8 @@ import Chart from 'primevue/chart';
 import Select from "primevue/select";
 // PrimeVue services
 import ToastService from 'primevue/toastservice';
+// PrimeVue directives
+import Tooltip from 'primevue/tooltip';
 
 const blue = definePreset(Aura, {
     semantic: {
@@ -101,4 +103,5 @@ app.component('pv-toast', Toast)
 app.component('pv-chart', Chart)
 app.component('pv-select', Select)
 app.use(ToastService)
+app.directive('tooltip', Tooltip);
 app.mount('#app')

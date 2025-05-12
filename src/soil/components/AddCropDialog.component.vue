@@ -54,8 +54,8 @@ h4 {
 }
 </style>
 
-<script setup>
-import {onMounted, ref, watch} from 'vue';
+<script setup lang="ts">
+import { ref, watch} from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { Crop } from "../models/crop.entity.js";
 
