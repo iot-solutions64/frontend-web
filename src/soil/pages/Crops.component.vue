@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import CropTable from '../components/CropTable.component.vue';
 import AddButton from '../../shared/components/AddButton.component.vue';
@@ -6,81 +6,90 @@ import AddCropDialog from '../components/AddCropDialog.component.vue';
 import DeleteCropDialog from '../components/DeleteCropDialog.component.vue';
 import EditCropDialog from '../components/EditCropDialog.component.vue';
 import router from "../../shared/router/index.js";
+import {Crop} from "../models/crop.entity.js";
+import {Tank} from "../../irrigation/models/tank.entity";
 
-const items = ref([]);
+const crops = ref([]);
+const tanks = ref([]);
 const showAddDialog = ref(false);
-const cropToDelete = ref(null);
+const cropToDelete = ref(new Crop());
 const showDeleteDialog = ref(false);
-const cropToEdit = ref(null);
+const cropToEdit = ref(new Crop());
 const showEditDialog = ref(false);
 
 onMounted(() => {
-  // TODO: Implement the logic to fetch items from a service
-  items.value = [
-    { id: 1, name: 'Recinto A', maxLiters: 1000, autoIrrigation: true },
-    { id: 2, name: 'Recinto B', maxLiters: 800, autoIrrigation: false },
+  // TODO: Implement the logic to fetch crops from a service
+  crops.value = [
+      new Crop(1, 'Recinto A', 1000, true, 1),
+      new Crop(2, 'Recinto B', 800, false, 1),
   ];
+
+  // TODO: Implement the logic to fetch tanks from a service
+  tanks.value = [
+    new Tank(1, 'Tanque A', 1000, 2000),
+    new Tank(2, 'Tanque B', 800, 1000),
+  ]
 });
 
-function viewItem(item) {
-  router.push(`/crops/${item.id}`);
+function viewCrop(id: number) {
+  router.push(`/crops/${id}`);
 }
 
-function openEditItemDialog(item) {
-  cropToEdit.value = item;
+function openEditCropDialog(crop: Crop) {
+  cropToEdit.value = crop;
   showEditDialog.value = true;
 }
 
-function editItem(item) {
+function editCrop(crop: Crop) {
   // TODO: Implement the logic to edit the item
-  item = { ...cropToEdit.value, ...item };
-  const index = items.value.findIndex(i => i.id === item.id);
+  crop = { ...cropToEdit.value, ...crop };
+  const index = crops.value.findIndex(i => i.id === crop.id);
   if (index !== -1) {
-    items.value[index] = { ...items.value[index], ...item };
+    crops.value[index] = { ...crops.value[index], ...crop };
   }
 }
 
-function openDeleteItemDialog(item) {
-  cropToDelete.value = item;
+function openDeleteCropDialog(crop: Crop) {
+  cropToDelete.value = crop;
   showDeleteDialog.value = true;
 }
 
-function deleteItem(item) {
+function deleteCrop(id: number) {
   // TODO: Implement the logic to delete the item
-  items.value = items.value.filter(i => i.id !== item.id);
+  crops.value = crops.value.filter(i => i.id !== id);
 }
 
-function openAddItemDialog() {
+function openAddCropDialog() {
   showAddDialog.value = true;
 }
 
-function saveItem(newItem) {
+function saveCrop(newCrop) {
   // TODO: Implement the logic to save the new item
-  newItem.id = items.value.length + 1;
-  newItem.autoIrrigation = true;
-  items.value.push(newItem);
+  newCrop.id = crops.value.length + 1;
+  crops.value.push(newCrop);
 }
 </script>
 
 <template>
   <h2>Cultivos</h2>
   <CropTable
-      :items="items"
-      @view="viewItem"
-      @edit="openEditItemDialog"
-      @delete="openDeleteItemDialog"
+      :items="crops"
+      @view="viewCrop"
+      @edit="openEditCropDialog"
+      @delete="openDeleteCropDialog"
   />
-  <AddCropDialog v-model:visible="showAddDialog" @save="saveItem" />
+  <AddCropDialog v-model:visible="showAddDialog" :tanks="tanks" @save="saveCrop" />
   <DeleteCropDialog v-model:visible="showDeleteDialog"
-                    :item="cropToDelete"
-                    @delete="deleteItem" />
+                    :crop="cropToDelete"
+                    @delete="deleteCrop" />
   <EditCropDialog
       v-model:visible="showEditDialog"
-      :item="cropToEdit"
-      @save="editItem"
+      :crop="cropToEdit"
+      :tanks="tanks"
+      @save="editCrop"
   />
   <pv-toast position="bottom-right"/>
-  <AddButton @click="openAddItemDialog"/>
+  <AddButton @click="openAddCropDialog"/>
 </template>
 
 <style scoped>

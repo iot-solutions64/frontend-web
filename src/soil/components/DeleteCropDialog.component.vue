@@ -24,10 +24,11 @@ h4 {
 <script setup>
 import { ref, watch } from 'vue';
 import { useToast } from 'primevue/usetoast';
+import {Crop} from "../models/crop.entity.js";
 
 const props = defineProps({
   visible: Boolean,
-  item: Object,
+  crop: Crop,
 });
 const emit = defineEmits(['update:visible', 'delete']);
 const localVisible = ref(props.visible);
@@ -45,8 +46,8 @@ const closeDialog = () => {
 };
 
 const handleDelete = () => {
-  emit('delete', props.item);
+  emit('delete', props.crop.id);
   closeDialog();
-  toast.add({ severity: 'success', summary: 'Cultivo eliminado', detail: `El cultivo ${props.item.name} ha sido eliminado.`, life: 3000 });
+  toast.add({ severity: 'success', summary: 'Cultivo eliminado', detail: `El cultivo ${props.crop.name} ha sido eliminado.`, life: 3000 });
 };
 </script>

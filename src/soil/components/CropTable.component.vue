@@ -11,7 +11,7 @@
       </pv-column>
       <pv-column header="Acciones">
         <template #body="slotProps">
-          <pv-button text icon="pi pi-search" @click="$emit('view', slotProps.data)" />
+          <pv-button text icon="pi pi-search" @click="$emit('view', slotProps.data.id)" />
           <pv-button text icon="pi pi-pencil" @click="$emit('edit', slotProps.data)" />
           <pv-button text icon="pi pi-trash" @click="$emit('delete', slotProps.data)" />
         </template>
@@ -20,9 +20,12 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
-  items: Array
+  items: {
+    type: Array,
+    required: true,
+  }
 });
 
 defineEmits(['view', 'edit', 'delete']);
