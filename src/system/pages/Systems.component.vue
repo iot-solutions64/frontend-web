@@ -4,6 +4,7 @@ import {System} from "../models/system.entity";
 import {Subsystem} from "../models/subsystem.entity";
 import {Crop} from "../../soil/models/crop.entity";
 import router from "../../shared/router/index.js";
+import AddButton from "../../shared/components/AddButton.component.vue";
 
 const systems = ref([]);
 const crops = ref([]);
@@ -51,6 +52,10 @@ function getBatteryColor(percentage: number) {
   if (percentage >= 20) return '#E67E22';
   return '#E74C3C';
 }
+
+function goToAddSystem() {
+  router.push(`/systems/add`);
+}
 </script>
 
 <template>
@@ -96,8 +101,8 @@ function getBatteryColor(percentage: number) {
           @click="goToSystem(system.id)"/>
       </div>
     </div>
-
   </div>
+  <AddButton @click="goToAddSystem"/>
 </template>
 
 <style scoped>

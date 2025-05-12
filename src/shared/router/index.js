@@ -10,6 +10,8 @@ import WaterGraphComponent from '../../irrigation/pages/WaterGraph.component.vue
 import WaterTanksComponent from '../../irrigation/pages/WaterTanks.component.vue'
 import RecommendedActionsComponent from '../../soil/pages/RecommendedActions.component.vue'
 import SystemDetailComponent from '../../system/pages/SystemDetail.component.vue'
+import AddSystemComponent from '../../system/pages/AddSystem.component.vue'
+import EditSystemComponent from '../../system/pages/EditSystem.component.vue'
 
 const routes = [
     { path: '/', redirect: '/crops' },
@@ -25,7 +27,8 @@ const routes = [
     { path: '/tanks', component: WaterTanksComponent, meta: { requiresAuth: true } },
     { path: '/systems', component: SystemsComponent, meta: { requiresAuth: true }},
     { path: '/systems/:id', component: SystemDetailComponent, meta: { requiresAuth: true } },
-
+    { path: '/systems/add', component: AddSystemComponent, meta: { requiresAuth: true }},
+    { path: '/systems/:id/edit', component: EditSystemComponent, meta: { requiresAuth: true } },
 ]
 
 const router = createRouter({
