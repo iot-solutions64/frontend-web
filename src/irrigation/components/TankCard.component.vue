@@ -1,35 +1,23 @@
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue'
+import {Tank} from "../models/tank.entity";
 
 const props = defineProps(
     {
-      id: {
-        type: Number,
+      tank: {
+        type: Tank,
         required: true,
       },
-      name: {
-        type: String,
-        required: true,
-      },
-      remainingLiters: {
-        type: Number,
-        required: true,
-      },
-      totalLiters: {
-        type: Number,
-        required: true,
-      }
     }
 );
 
-const emit = defineEmits(['edit', 'delete']);
+const emit = defineEmits(['openEdit', 'openDelete']);
 
 function editTank() {
-  emit('edit');
+  emit('openEdit', props.tank);
 }
 
 function deleteTank() {
-  emit('delete');
+  emit('openDelete', props.tank);
 }
 
 </script>
@@ -40,8 +28,8 @@ function deleteTank() {
       <img src="/assets/icons/water.svg" alt="water" style="width: 40px; height: 40px;"/>
     </div>
     <div class="flex-1 text-center">
-      <h5>{{ name }}</h5>
-      <p>{{ remainingLiters }} L / {{ totalLiters }} L</p>
+      <h5>{{ tank.name }}</h5>
+      <p>{{ tank.remainingLiters }} L / {{ tank.totalLiters }} L</p>
     </div>
     <div class="flex gap-2">
       <pv-button
