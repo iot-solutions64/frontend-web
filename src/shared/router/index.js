@@ -8,6 +8,7 @@ import SystemComponent from '../../system/pages/System.component.vue'
 import CropDetailComponent from '../../soil/pages/CropDetail.component.vue'
 import WaterGraph from '../../irrigation/pages/WaterGraph.component.vue'
 import WaterTanks from '../../irrigation/pages/WaterTanks.component.vue'
+import RecommendedActions from '../../soil/pages/RecommendedActions.component.vue'
 
 const routes = [
     { path: '/', redirect: '/crops' },
@@ -16,6 +17,8 @@ const routes = [
     { path: '/signup', component: SignUpComponent },
     { path: '/crops', component: CropsComponent, meta: { requiresAuth: true } },
     { path: '/crops/:id', component: CropDetailComponent, meta: { requiresAuth: true } },
+    { path: '/temperature/:id/actions', component: RecommendedActions, meta: { requiresAuth: true } },
+    { path: '/humidity/:id/actions', component: RecommendedActions, meta: { requiresAuth: true } },
     { path: '/water', component: WaterManagementComponent, meta: { requiresAuth: true } },
     { path: '/water/graph', component: WaterGraph, meta: { requiresAuth: true } },
     { path: '/tanks', component: WaterTanks, meta: { requiresAuth: true } },

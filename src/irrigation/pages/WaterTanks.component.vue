@@ -66,7 +66,7 @@ function deleteTank(id: number) {
                class="mr-2"/>
     <h3 class="m-0 text-center flex-grow-1">Tanques</h3>
   </div>
-  <div class="flex flex-column w-5 mx-auto gap-3">
+  <div class="flex flex-column w-10 lg:w-5 mx-auto gap-3">
     <TankCard
         v-for="tank in tanks"
         :key="tank.id"

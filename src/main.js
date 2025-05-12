@@ -23,8 +23,11 @@ import Dialog from 'primevue/dialog';
 import InputNumber from 'primevue/inputnumber';
 import Toast from 'primevue/toast';
 import Chart from 'primevue/chart';
+import Select from "primevue/select";
 // PrimeVue services
 import ToastService from 'primevue/toastservice';
+// PrimeVue directives
+import Tooltip from 'primevue/tooltip';
 
 const blue = definePreset(Aura, {
     semantic: {
@@ -98,5 +101,7 @@ app.component('pv-dialog', Dialog)
 app.component('pv-input-number', InputNumber)
 app.component('pv-toast', Toast)
 app.component('pv-chart', Chart)
+app.component('pv-select', Select)
 app.use(ToastService)
+app.directive('tooltip', Tooltip);
 app.mount('#app')
