@@ -6,6 +6,7 @@ import {Subsystem} from "../models/subsystem.entity";
 
 const systemId = ref(0);
 const system = ref(new System());
+const name = ref("");
 
 onMounted(() => {
   systemId.value = Number(router.currentRoute.value.params.id);
@@ -14,7 +15,6 @@ onMounted(() => {
       systemId.value,
       "Sistema de zanahorias",
       1,
-
       70,
       [
         new Subsystem(1, "Regado automatico", null, "Normal", true),
@@ -23,7 +23,28 @@ onMounted(() => {
         new Subsystem(4, "Cantidad de agua", 1000, "Insuficiente", false),
       ]
   );
+  name.value = system.value.name;
 });
+
+function saveChanges() {
+  // TODO: Implement the logic to save changes
+  system.value = new System(
+      systemId.value,
+      name.value,
+      system.value.cropId,
+      system.value.batteryLevel,
+      system.value.subsystems.map((subsystem) => {
+        return new Subsystem(
+            subsystem.id,
+            subsystem.name,
+            subsystem.value,
+            subsystem.status,
+            subsystem.active
+        );
+      })
+  );
+  router.back();
+}
 </script>
 
 <template>
@@ -34,7 +55,11 @@ onMounted(() => {
                class="mr-2"/>
   </div>
   <div class="flex flex-column gap-5 justify-content-center align-items-center mb-5">
-    <table class="w-3" style="border-collapse: collapse;">
+    <div class="flex flex-column w-5 mx-auto text-center">
+      <label for="name" class="name-label mb-2">Nombre</label>
+      <pv-input-text class="h-3rem text-center" id="name" v-model="name" />
+    </div>
+    <table class="w-4 m-5" style="border-collapse: collapse;">
       <thead>
       <tr>
         <th class="table-header">Sistema</th>
@@ -45,19 +70,19 @@ onMounted(() => {
       </thead>
       <tbody>
       <tr v-for="(sub, idx) in system.subsystems" :key="idx">
-        <td class="p-2">{{ sub.name }}</td>
-        <td class="p-2">{{ sub.value ?? 'No aplica' }}</td>
-        <td class="p-2">{{ sub.status }}</td>
-        <td class="p-2 text-center">
-          <pv-checkbox v-model="sub.active" binary disabled/>
+        <td class="p-3">{{ sub.name }}</td>
+        <td class="p-3">{{ sub.value ?? 'No aplica' }}</td>
+        <td class="p-3">{{ sub.status }}</td>
+        <td class="p-3 text-center">
+          <pv-checkbox v-model="sub.active" binary/>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
   <div class="flex gap-3 justify-content-center align-items-center">
-    <pv-button label="Cancelar" icon="pi pi-pencil" class="w-10rem" @click=""/>
-    <pv-button label="Guardar cambios" severity="danger" icon="pi pi-trash" class="w-10rem" @click=""/>
+    <pv-button label="Cancelar" severity="danger" icon="pi pi-trash" class="w-15rem" @click="router.back()"/>
+    <pv-button label="Guardar cambios" icon="pi pi-pencil" class="w-15rem" @click="saveChanges"/>
   </div>
 </template>
 
@@ -65,5 +90,11 @@ onMounted(() => {
 .table-header {
   padding: 8px;
   border-bottom: 2px solid rgba(85, 85, 85, 0.11);
+}
+
+.name-label {
+  font-weight: 600;
+  font-size: 32px;
+  text-align: center;
 }
 </style>
