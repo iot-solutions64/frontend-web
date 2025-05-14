@@ -12,10 +12,42 @@ onMounted(() => {
   id.value = Number(router.currentRoute.value.params.id);
   isHumidity.value = router.currentRoute.value.fullPath.includes('humidity');
   // TODO: Get the status from the API with the id
-  status.value = 'UNFAVORABLE_OVER';
+  switch (id.value) {
+    case 1:
+      status.value = 'FAVORABLE';
+      break;
+    case 2:
+      status.value = 'SLIGHTLY_UNFAVORABLE_UNDER';
+      break;
+    case 3:
+      status.value = 'SLIGHTLY_UNFAVORABLE_OVER';
+      break;
+    case 4:
+      status.value = 'UNFAVORABLE_UNDER';
+      break;
+    case 5:
+      status.value = 'UNFAVORABLE_OVER';
+      break;
+  }
   if (isHumidity.value) {
+    switch(id.value) {
+      case 6:
+        status.value = 'FLOODED';
+        break;
+      case 7:
+        status.value = 'DRY';
+        break;
+    }
     suggestions.value = HUMIDITY_SUGGESTIONS[status.value].videos;
   } else {
+    switch(id.value) {
+      case 6:
+        status.value = 'BURNING';
+        break;
+      case 7:
+        status.value = 'FREEZING';
+        break;
+    }
     suggestions.value = TEMPERATURE_SUGGESTIONS[status.value].videos;
   }
 })

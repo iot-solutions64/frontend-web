@@ -77,7 +77,7 @@ function goToCropSystem() {
           <pv-button
               label="Ver acciones"
               icon="pi pi-search"
-              @click="goToHumidityActions(humidity.id)"
+              @click="goToHumidityActions(HUMIDITY_SUGGESTIONS[humidity.status]?.id)"
               :disabled="humidity.status === 'FAVORABLE'"
           />
         </td>
@@ -98,7 +98,7 @@ function goToCropSystem() {
           <pv-button
               label="Ver acciones"
               icon="pi pi-search"
-              @click="goToTemperatureActions(temperature.id)"
+              @click="goToTemperatureActions(TEMPERATURE_SUGGESTIONS[temperature.status]?.id)"
               :disabled="temperature.status === 'FAVORABLE'"
           />
         </td>
