@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import store from '../store/store.js'
 import {useRouter} from "vue-router";
 import {ref} from "vue";
+import { nextTick } from 'vue'
 
 const router = useRouter()
 const menu = ref()
@@ -22,7 +23,7 @@ const items = [
   {
     label: 'Cerrar sesión',
     icon: 'pi pi-sign-out',
-    command: () => { logout() }
+    command: () => { logout(); }
   }
 ]
 
@@ -31,10 +32,13 @@ const toggle = (event) => {
 };
 
 const logout = () => {
-  store.dispatch('logout').then(
-    () => { router.push('/login') }
-  )
+  store.dispatch('logout').then(() => {
+    nextTick(() => {
+      router.push('/login');
+    })
+  })
 }
+
 </script>
 
 <template>
