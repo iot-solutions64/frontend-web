@@ -48,6 +48,11 @@ export class BaseService {
         return axios.put(`${this.endpointPath()}/${id}`, data, this.httpOptions);
     }
 
+    patch(id, data){
+        this.setToken();
+        return axios.patch(`${this.endpointPath()}/${id}`, data, this.httpOptions);
+    }
+
     delete(id){
         this.setToken();
         return axios.delete(`${this.endpointPath()}/${id}`, this.httpOptions);

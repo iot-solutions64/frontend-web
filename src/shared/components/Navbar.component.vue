@@ -17,7 +17,7 @@ const items = [
   },
   {
     label: 'Sistemas',
-    command: () => router.push('/system')
+    command: () => router.push('/systems')
   },
   {
     label: 'Cerrar sesión',
@@ -44,7 +44,7 @@ const toggle = (event) => {
         <ul class="nav-sections">
           <li><router-link to="/crops">Cultivos</router-link></li>
           <li><router-link to="/water">Gestión de agua</router-link></li>
-          <li><router-link to="/system">Sistemas</router-link></li>
+          <li><router-link to="/systems">Sistemas</router-link></li>
         </ul>
         <pv-button @click="store.dispatch('logout')"
                    text
