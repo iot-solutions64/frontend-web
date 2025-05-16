@@ -8,7 +8,7 @@ const resultMessage = ref('');
 const monthlyHistory = ref([]);
 const columns = ref([
   { field: 'mes', header: 'Mes' },
-  { field: 'cantidad', header: 'Cantidad utilizada' },
+  { field: 'cantidad', header: 'Cantidad de agua utilizada (L)' },
 ]);
 
 onMounted(() => {
