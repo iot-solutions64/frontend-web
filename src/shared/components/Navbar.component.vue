@@ -1,7 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import store from '../store/store.js'
 import {useRouter} from "vue-router";
 import {ref} from "vue";
+import { nextTick } from 'vue'
 
 const router = useRouter()
 const menu = ref()
@@ -22,15 +23,22 @@ const items = [
   {
     label: 'Cerrar sesión',
     icon: 'pi pi-sign-out',
-    command: () => { store.dispatch('logout').then(
-      () => { router.push('/login') }
-    ) }
+    command: () => { logout(); }
   }
 ]
 
 const toggle = (event) => {
   menu.value.toggle(event);
 };
+
+const logout = () => {
+  store.dispatch('logout').then(() => {
+    nextTick(() => {
+      router.push('/login');
+    })
+  })
+}
+
 </script>
 
 <template>
@@ -46,7 +54,7 @@ const toggle = (event) => {
           <li><router-link to="/water">Gestión de agua</router-link></li>
           <li><router-link to="/systems">Sistemas</router-link></li>
         </ul>
-        <pv-button @click="store.dispatch('logout')"
+        <pv-button @click="logout"
                    text
                    icon="pi pi-sign-out"
                    style="color: white; font-size: 20px;"
