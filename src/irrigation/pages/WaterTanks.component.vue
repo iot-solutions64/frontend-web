@@ -18,8 +18,8 @@ const tankToDelete = ref(new Tank());
 onMounted(() => {
   // TODO: Implement the logic to fetch items from a service
   tanks.value = [
-      new Tank(1, 'Tanque A', 1000, 2000),
-      new Tank(2, 'Tanque B', 800, 1000),
+      new Tank(1, 'Tanque A', 7000, 8000),
+      new Tank(2, 'Tanque B', 8000, 12000),
   ]
 });
 
