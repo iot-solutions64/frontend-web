@@ -1,7 +1,7 @@
 <script setup>
 import store from '../store/store.js'
 import {useRouter} from "vue-router";
-import {ref} from "vue";
+import {nextTick, ref} from "vue";
 
 const router = useRouter()
 const menu = ref()
@@ -20,7 +20,7 @@ const items = [
     command: () => router.push('/systems')
   },
   {
-    label: 'Cerrar sesión',
+    label: 'Salir',
     icon: 'pi pi-sign-out',
     command: () => { store.dispatch('logout').then(
       () => { router.push('/login') }
@@ -31,6 +31,15 @@ const items = [
 const toggle = (event) => {
   menu.value.toggle(event);
 };
+
+const logout = () => {
+  store.dispatch('logout').then(() => {
+    nextTick(() => {
+      router.push('/login');
+    })
+  })
+}
+
 </script>
 
 <template>
@@ -40,28 +49,17 @@ const toggle = (event) => {
       <h5>HydroSmart</h5>
     </div>
     <div class="desktop-menu">
-      <ul class="nav-links">
-        <li><router-link to="/crops">Cultivos</router-link></li>
-        <li><router-link to="/water">Gestión de agua</router-link></li>
-        <li><router-link to="/systems">Sistemas</router-link></li>
-      </ul>
-      <pv-button @click="store.dispatch('logout')"
-                 label="Salir"
-                 text
-                 icon="pi pi-sign-out"
-                 iconPos="right"
-                 aria-label="log out"/>
+      <div class="nav-links">
+        <router-link to="/crops">Cultivos</router-link>
+        <router-link to="/water">Gestión de agua</router-link>
+        <router-link to="/systems">Sistemas</router-link>
+      </div>
+      <pv-button text label="Salir" aria-label="log out" @click="logout"
+                 icon="pi pi-sign-out" iconPos="right"/>
     </div>
     <div class="mobile-menu">
-      <pv-button icon="pi pi-bars"
-                 text
-                 style="color: white; font-size: 20px;"
-                 @click="toggle"/>
-      <pv-menu ref="menu"
-               id="overlay_menu"
-               :model="items"
-               :popup="true"
-      />
+      <pv-button icon="pi pi-bars" text @click="toggle"/>
+      <pv-menu ref="menu" id="overlay_menu" :model="items" :popup="true"/>
     </div>
   </nav>
 </template>
@@ -78,7 +76,6 @@ nav{
 }
 
 .nav-logo {
-  width: 30%;
   display: flex;
   align-items: center;
   font-weight: bold;
@@ -89,11 +86,9 @@ nav{
 }
 
 .desktop-menu {
-  width: 70%;
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: right;
 }
 
 .mobile-menu {
@@ -107,34 +102,31 @@ nav{
   list-style: none;
 }
 
-.nav-links>li {
+.nav-links>a {
   height: 100%;
   display: flex;
   align-items: center;
-  transition: background-color 0.4s ease;
-}
-
-.nav-links>li>a {
-  font-size: 24px;
   padding: 0 1rem 0 1rem;
+  font-size: 20px;
   text-decoration: none;
-  color: var(--background-color);
+  color: var(--text-color-inverted);
+  transition: background-color 0.3s ease;
 }
 
-.nav-links li:hover {
+.nav-links>a:hover {
   background-color: var(--primary-color-darker);
 }
 
 .p-button{
   font-size: 20px;
   background-color: transparent;
-  color: white;
-  transition: background-color 0.4s ease;
+  color: var(--text-color-inverted);
+  transition: background-color 0.2s ease;
 }
 
 .p-button:hover {
   background-color: red !important;
-  color: white !important;
+  color: var(--text-color-inverted) !important;
 }
 
 @media (max-width: 768px) {
@@ -143,6 +135,10 @@ nav{
   }
   .mobile-menu {
     display: block;
+  }
+
+  .p-button:hover{
+    background-color: var(--primary-color-darker) !important;
   }
 }
 
