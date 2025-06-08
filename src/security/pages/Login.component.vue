@@ -24,7 +24,7 @@ const login = async () => {
       userId: loginResponse.userId
     });
     await router.push('/crops');
-  } catch (error) {
+  } catch (e) {
     error.value = true;
   }
 };
