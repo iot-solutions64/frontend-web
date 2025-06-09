@@ -8,6 +8,7 @@ import EditCropDialog from '../components/EditCropDialog.component.vue';
 import router from "../../shared/router/index.js";
 import {Crop} from "../models/crop.entity.js";
 import {Tank} from "../../irrigation/models/tank.entity";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const crops = ref([]);
 const tanks = ref([]);
@@ -71,23 +72,11 @@ function saveCrop(newCrop) {
 </script>
 
 <template>
-  <h2>Cultivos</h2>
-  <CropTable
-      :items="crops"
-      @view="viewCrop"
-      @edit="openEditCropDialog"
-      @delete="openDeleteCropDialog"
-  />
+  <DefaultHeader title="Cultivos" :show-back-button="false"/>
+  <CropTable :items="crops" @view="viewCrop" @edit="openEditCropDialog" @delete="openDeleteCropDialog"/>
   <AddCropDialog v-model:visible="showAddDialog" :tanks="tanks" @save="saveCrop" />
-  <DeleteCropDialog v-model:visible="showDeleteDialog"
-                    :crop="cropToDelete"
-                    @delete="deleteCrop" />
-  <EditCropDialog
-      v-model:visible="showEditDialog"
-      :crop="cropToEdit"
-      :tanks="tanks"
-      @save="editCrop"
-  />
+  <DeleteCropDialog v-model:visible="showDeleteDialog" :crop="cropToDelete" @delete="deleteCrop" />
+  <EditCropDialog v-model:visible="showEditDialog" :crop="cropToEdit" :tanks="tanks" @save="editCrop"/>
   <pv-toast position="bottom-right"/>
   <AddButton @click="openAddCropDialog"/>
 </template>

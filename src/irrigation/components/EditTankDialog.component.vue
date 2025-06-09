@@ -2,19 +2,19 @@
   <pv-dialog v-model:visible="localVisible" modal :style="{ width: '25rem' }">
     <template #header>
       <div class="flex flex-column">
-        <h4 class="m-1">Editar tanque</h4>
-        <p class="m-1">Datos del tanque</p>
+        <h5 class="m-1">Editar tanque</h5>
+        <span class="m-1">Datos del tanque</span>
       </div>
     </template>
     <p class="error" v-if="error">Por favor completa todos los campos correctamente.</p>
     <div class="flex items-center mb-4">
-      <pv-ifta-label style="margin: 0 auto; width: 80%;">
+      <pv-ifta-label style="margin: 0 auto; width: 100%;">
         <pv-input-text id="name" style="width: 100%;" v-model="name" />
         <label for="name" class="font-semibold w-24">Nombre</label>
       </pv-ifta-label>
     </div>
     <div class="flex items-center mb-4">
-      <pv-ifta-label style="margin: 0 auto; width: 80%;">
+      <pv-ifta-label style="margin: 0 auto; width: 100%;">
         <pv-input-number id="totalLiters"
                          style="width: 100%;"
                          v-model="totalLiters"

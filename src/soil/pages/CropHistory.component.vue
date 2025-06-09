@@ -4,6 +4,7 @@ import {computed, onMounted, ref} from "vue";
 import {Record} from "../models/record.entity";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";
 import {TEMPERATURE_SUGGESTIONS} from "../constants/temperature-suggestions.constant";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const cropId = ref(0);
 const isShortHistory = ref(false);
@@ -54,17 +55,17 @@ onMounted(() => {
 
 const getHumidityTitle = (key: string) => HUMIDITY_SUGGESTIONS[key]?.title ?? key;
 const getTemperatureTitle = (key: string) => TEMPERATURE_SUGGESTIONS[key]?.title ?? key;
+
+const title = computed(() => isShortHistory ? 'Historial de cultivo' : 'Historial detallado de cultivo');
+const subtitle = computed(() => isShortHistory ? 'Datos de los últimos 30 días (promedio diario)' : 'Datos completos (promedio diario)');
 </script>
 
 <template>
-  <div class="flex align-items-center m-3 mb-6">
-    <pv-button icon="pi pi-arrow-left"
-               @click="router.back()"
-               aria-label="Volver"
-               class="mr-2"/>
-    <h3 class="m-0 text-center flex-grow-1">{{ isShortHistory ? 'Historial de cultivo' : 'Historial detallado de cultivo' }}</h3>
-  </div>
-  <h6 class="text-center font-normal m-3">{{ isShortHistory ? 'Datos de los últimos 30 días (promedio diario)' : 'Datos completos (promedio diario)' }}</h6>
+  <DefaultHeader
+      :title="title"
+      :subtitle="subtitle"
+      :show-back-button="true"
+  />
   <div class="flex justify-content-center mx-auto">
     <pv-data-table :value="limitedHistory" table-style="min-width: 60rem" style="overflow-x: auto">
       <pv-column field="date" header="Fecha" />

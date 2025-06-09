@@ -3,6 +3,7 @@ import router from "../../shared/router/index.js";
 import {onMounted, ref} from "vue";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";
 import {TEMPERATURE_SUGGESTIONS} from "../constants/temperature-suggestions.constant";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const id = ref(0);
 const isHumidity = ref(false);
@@ -64,14 +65,11 @@ const openVideo = (url: string) => {
 </script>
 
 <template>
-  <div class="flex align-items-center m-3 mb-6">
-    <pv-button icon="pi pi-arrow-left"
-               @click="router.back()"
-               aria-label="Volver"
-               class="mr-2"/>
-    <h3 class="m-0 text-center flex-grow-1">Acciones recomendadas</h3>
-  </div>
-  <h5 class="text-center font-normal">Te recomendamos estos tutoriales en base a los problemas detectados</h5>
+  <DefaultHeader
+      title="Acciones Recomendadas"
+      subtitle="Te recomendamos estos tutoriales en base a los problemas detectados"
+      :show-back-button="true"
+  />
   <div class="flex justify-content-center gap-4 flex-wrap">
     <div id="video" v-for="(video, index) in suggestions" :key="index" class="text-center flex flex-column w-6 lg:w-4 xl:w-3">
       <h6>{{video.title}}</h6>

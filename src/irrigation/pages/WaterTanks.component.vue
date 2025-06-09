@@ -7,6 +7,7 @@ import TankCard from '../components/TankCard.component.vue';
 import {Tank} from "../models/tank.entity";
 import EditTankDialog from '../components/EditTankDialog.component.vue';
 import DeleteTankDialog from '../components/DeleteTankDialog.component.vue';
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const showAddDialog = ref(false);
 const showEditDialog = ref(false);
@@ -59,13 +60,7 @@ function deleteTank(id: number) {
 </script>
 
 <template>
-  <div class="flex align-items-center m-3 mb-8">
-    <pv-button icon="pi pi-arrow-left"
-               @click="router.back()"
-               aria-label="Volver"
-               class="mr-2"/>
-    <h3 class="m-0 text-center flex-grow-1">Tanques</h3>
-  </div>
+  <DefaultHeader title="Tanques de Agua" :show-back-button="true"/>
   <div class="flex flex-column w-10 lg:w-5 mx-auto gap-3">
     <TankCard
         v-for="tank in tanks"

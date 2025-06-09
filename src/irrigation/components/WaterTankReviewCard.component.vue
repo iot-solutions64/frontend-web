@@ -1,0 +1,114 @@
+<script setup lang="ts">
+import {onMounted, ref} from 'vue';
+import router from "../../shared/router/index.js";
+import WaterDropIcon from "../../shared/custom-icons/WaterDrop.icon.vue";
+
+defineOptions({
+  name: "WaterTankReviewCard"
+})
+
+const remainingLiters = ref(0);
+const totalLiters = ref(0);
+const resultMessage = ref('');
+
+onMounted(() => {
+  // TODO: Implement the logic to fetch items from a service
+  remainingLiters.value = 15000;
+  totalLiters.value = 20000;
+  resultMessage.value = 'El agua restante es suficiente para el riego.';
+});
+
+function goToTanks() {
+  router.push('/tanks');
+}
+</script>
+
+<template>
+  <div class="container">
+    <pv-card>
+      <template #header>
+        <h4 class="text-center">Datos de los tanques</h4>
+      </template>
+      <template #content>
+        <div class="content">
+          <WaterDropIcon height="100px" width="100px"/>
+          <div class="water-data">
+            <h5>Total de agua restante</h5>
+            <p>{{ remainingLiters }} / {{ totalLiters }} L</p>
+            <p v-if="resultMessage"><strong>Resultado:</strong> {{ resultMessage }}</p>
+          </div>
+        </div>
+      </template>
+      <template #footer>
+        <div class="flex justify-content-center">
+          <p id="result-text" v-if="resultMessage"><strong>Resultado:</strong> {{ resultMessage }}</p>
+          <pv-button class="w-15rem" label="Ver tanques" @click="goToTanks"/>
+        </div>
+      </template>
+    </pv-card>
+  </div>
+</template>
+
+<style scoped>
+.container{
+  width: 650px;
+  height: 100%;
+}
+
+h4{
+  margin: 0.3em;
+  padding: 0.3em;
+}
+
+.content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+}
+
+.water-data {
+  text-align: left;
+}
+
+.water-data>h5{
+  margin: 0;
+  padding: 0;
+  color: var(--primary-color);
+}
+
+.water-data p:nth-child(2) {
+  font-weight: 500;
+  font-size: 25px;
+  color: var(--text-color);
+}
+
+#result-text {
+  display: none;
+}
+
+.water-data p:nth-child(3) {
+  max-width: 250px;
+}
+
+@media (max-width: 768px) {
+  #water-data p:first-child {
+    font-size: 1.2rem;
+    margin: 0;
+  }
+
+  #water-data p:nth-child(2) {
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  #water-data p:nth-child(3) {
+    display: none;
+  }
+
+  #result-text {
+    display: block;
+    text-align: center;
+  }
+}
+</style>

@@ -24,6 +24,7 @@ import InputNumber from 'primevue/inputnumber';
 import Toast from 'primevue/toast';
 import Chart from 'primevue/chart';
 import Select from "primevue/select";
+import SelectButton from 'primevue/selectbutton';
 // PrimeVue services
 import ToastService from 'primevue/toastservice';
 // PrimeVue directives
@@ -47,7 +48,7 @@ const blue = definePreset(Aura, {
         colorScheme: {
             light: {
                 primary: {
-                    color: "{primary.500}",
+                    backgroundColor: "{primary.500}",
                     contrastColor: "#ffffff",
                     hoverColor: "{primary.600}",
                     activeColor: "{primary.700}",
@@ -55,7 +56,7 @@ const blue = definePreset(Aura, {
                 highlight: {
                     background: "{primary.50}",
                     focusBackground: "{primary.100}",
-                    color: "{primary.700}",
+                    backgroundColor: "{primary.700}",
                     focusColor: "{primary.800}",
                 },
                 surface: {
@@ -102,6 +103,7 @@ app.component('pv-input-number', InputNumber)
 app.component('pv-toast', Toast)
 app.component('pv-chart', Chart)
 app.component('pv-select', Select)
+app.component('pv-select-button', SelectButton)
 app.use(ToastService)
 app.directive('tooltip', Tooltip);
 app.mount('#app')
