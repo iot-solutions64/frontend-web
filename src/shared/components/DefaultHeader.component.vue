@@ -8,7 +8,7 @@ defineProps({
   subtitle: {
     type: String,
     required: false,
-    default: false
+    default: ""
   },
   showBackButton: {
     type: Boolean,
@@ -26,7 +26,7 @@ defineProps({
     <h3 class="title">{{title}}</h3>
     <div></div> <!--Alignment helper-->
   </header>
-  <p class="subtitle" v-if="subtitle">{{subtitle}}</p>
+  <p class="subtitle" v-if="subtitle !== ''">{{subtitle}}</p>
 </template>
 
 <style scoped>

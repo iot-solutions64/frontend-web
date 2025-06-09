@@ -6,7 +6,7 @@ import { Humidity } from "../models/humidity.entity";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";
 import {TEMPERATURE_SUGGESTIONS} from "../constants/temperature-suggestions.constant";
 import {System} from "../../system/models/system.entity";
-import DefaultHeader from "../../shared/components/DefaultHeader.vue";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const cropId = ref(0);
 const temperature = ref(new Temperature());
@@ -135,14 +135,6 @@ function goToCropSystem() {
 </template>
 
 <style scoped>
-.component-header{
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  padding: 0 2rem 0 2rem;
-  margin: 2rem 0 2rem 0;
-}
-
 .title{
   margin: 0;
   text-align: center;

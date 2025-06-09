@@ -8,7 +8,7 @@ import EditCropDialog from '../components/EditCropDialog.component.vue';
 import router from "../../shared/router/index.js";
 import {Crop} from "../models/crop.entity.js";
 import {Tank} from "../../irrigation/models/tank.entity";
-import DefaultHeader from "../../shared/components/DefaultHeader.vue";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const crops = ref([]);
 const tanks = ref([]);

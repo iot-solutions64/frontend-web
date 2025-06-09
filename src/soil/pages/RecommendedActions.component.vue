@@ -3,7 +3,7 @@ import router from "../../shared/router/index.js";
 import {onMounted, ref} from "vue";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";
 import {TEMPERATURE_SUGGESTIONS} from "../constants/temperature-suggestions.constant";
-import DefaultHeader from "../../shared/components/DefaultHeader.vue";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const id = ref(0);
 const isHumidity = ref(false);

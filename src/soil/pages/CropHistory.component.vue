@@ -4,7 +4,7 @@ import {computed, onMounted, ref} from "vue";
 import {Record} from "../models/record.entity";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";
 import {TEMPERATURE_SUGGESTIONS} from "../constants/temperature-suggestions.constant";
-import DefaultHeader from "../../shared/components/DefaultHeader.vue";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const cropId = ref(0);
 const isShortHistory = ref(false);

@@ -1,19 +1,7 @@
-<template>
-  <div class="flex align-items-center m-3 mb-8">
-    <pv-button icon="pi pi-arrow-left"
-               @click="router.back()"
-               aria-label="Volver"
-               class="mr-2"/>
-    <h3 class="m-0 text-center flex-grow-1">Historial de consumo</h3>
-  </div>
-  <div class="w-10 lg:w-6 m mx-auto">
-    <pv-chart type="bar" :data="chartData" :options="chartOptions" />
-  </div>
-</template>
-
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import router from "../../shared/router/index.js";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const monthlyHistory = ref([]);
 const chartData = ref();
@@ -83,3 +71,10 @@ const setChartOptions = () => {
   };
 };
 </script>
+
+<template>
+  <DefaultHeader title="Historial de consumo" :show-back-button="true"/>
+  <div class="w-10 lg:w-6 m mx-auto">
+    <pv-chart type="bar" :data="chartData" :options="chartOptions" />
+  </div>
+</template>
