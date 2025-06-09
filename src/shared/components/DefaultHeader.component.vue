@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import router from "../router/index.js";
+defineOptions({
+  name: "DefaultHeader"
+});
 defineProps({
   title: {
     type: String,

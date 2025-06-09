@@ -48,7 +48,7 @@ const blue = definePreset(Aura, {
         colorScheme: {
             light: {
                 primary: {
-                    color: "{primary.500}",
+                    backgroundColor: "{primary.500}",
                     contrastColor: "#ffffff",
                     hoverColor: "{primary.600}",
                     activeColor: "{primary.700}",
@@ -56,7 +56,7 @@ const blue = definePreset(Aura, {
                 highlight: {
                     background: "{primary.50}",
                     focusBackground: "{primary.100}",
-                    color: "{primary.700}",
+                    backgroundColor: "{primary.700}",
                     focusColor: "{primary.800}",
                 },
                 surface: {
