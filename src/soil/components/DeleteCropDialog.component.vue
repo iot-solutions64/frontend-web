@@ -1,13 +1,13 @@
 <template>
   <pv-dialog v-model:visible="localVisible" modal :style="{ width: '25rem' }">
     <template #header>
-      <h4>Eliminar cultivo</h4>
+      <h5>Eliminar cultivo</h5>
     </template>
-    <div class="text-center mb-4">
+    <main>
       <p>¿Estás seguro de que deseas eliminar este cultivo? Esta acción no se puede deshacer.</p>
-    </div>
+    </main>
     <template #footer>
-      <div class="flex flex-row gap-4 w-full justify-content-center">
+      <div class="footer">
         <pv-button label="Cancelar" severity="secondary" @click="closeDialog" />
         <pv-button label="Eliminar" severity="danger" @click="handleDelete" />
       </div>
@@ -16,8 +16,14 @@
 </template>
 
 <style scoped>
-h4 {
-  margin: 1rem;
+h5{
+  margin:0;
+}
+.footer{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
 }
 </style>
 

@@ -24,6 +24,7 @@ import InputNumber from 'primevue/inputnumber';
 import Toast from 'primevue/toast';
 import Chart from 'primevue/chart';
 import Select from "primevue/select";
+import SelectButton from 'primevue/selectbutton';
 // PrimeVue services
 import ToastService from 'primevue/toastservice';
 // PrimeVue directives
@@ -102,6 +103,7 @@ app.component('pv-input-number', InputNumber)
 app.component('pv-toast', Toast)
 app.component('pv-chart', Chart)
 app.component('pv-select', Select)
+app.component('pv-select-button', SelectButton)
 app.use(ToastService)
 app.directive('tooltip', Tooltip);
 app.mount('#app')
