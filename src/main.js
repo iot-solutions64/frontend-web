@@ -6,7 +6,7 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import {definePreset} from "@primeuix/themes";
-import store from "./shared/store/store.js";
+import store from "./security/services/authentication.store.old.js";
 import router from "./shared/router/index.js";
 // PrimeVue components
 import Button from 'primevue/button';

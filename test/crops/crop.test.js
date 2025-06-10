@@ -1,5 +1,5 @@
 import { expect, test, beforeEach } from "vitest";
-import { CropService } from "../../src/soil/services/crop.service.js";
+import { CropService } from "../../src/soil/services/crop.service.ts";
 
 // Mock de localStorage
 beforeEach(() => {
