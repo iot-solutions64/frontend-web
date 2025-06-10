@@ -1,7 +1,7 @@
 import axios from "axios";
 import {BaseService} from "../../shared/services/base.service.js";
 
-export class AuthenticationService extends BaseService {
+export class AuthenticationServiceOld extends BaseService {
     constructor() {
         super("authentication");
     }

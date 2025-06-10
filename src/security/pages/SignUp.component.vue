@@ -1,13 +1,13 @@
 <script setup>
 import { ref } from 'vue';
-import { AuthenticationService } from '../services/authentication.service.js';
+import { AuthenticationServiceOld } from '../services/authentication.service.old.js';
 import router from '../../shared/router/index.js';
 
 const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 const error = ref('');
-const authenticationService = new AuthenticationService();
+const authenticationService = new AuthenticationServiceOld();
 
 const register = async () => {
   error.value = '';

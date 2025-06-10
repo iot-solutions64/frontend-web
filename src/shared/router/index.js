@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from '../store/store.js'
+import store from '../../security/services/authentication.store.old.js'
 import CropsComponent from '../../soil/pages/Crops.component.vue'
 import SignUpComponent from '../../security/pages/SignUp.component.vue'
 import LoginComponent from '../../security/pages/Login.component.vue'

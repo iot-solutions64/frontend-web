@@ -1,14 +1,14 @@
 <script setup>
 import { ref } from 'vue';
-import {AuthenticationService} from "../services/authentication.service.js";
+import {AuthenticationServiceOld} from "../services/authentication.service.old.js";
 import router from "../../shared/router/index.js";
-import store from "../../shared/store/store.js";
+import store from "../services/authentication.store.old.js";
 import {LoginResponse} from "../models/login-response.entity.js";
 
 const username = ref("");
 const password = ref("");
 const error = ref(false);
-const authenticationService = new AuthenticationService();
+const authenticationService = new AuthenticationServiceOld();
 
 const login = async () => {
   error.value = false;

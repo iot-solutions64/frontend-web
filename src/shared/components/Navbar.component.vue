@@ -1,5 +1,5 @@
 <script setup>
-import store from '../store/store.js'
+import store from '../../security/services/authentication.store.old.js'
 import {useRouter} from "vue-router";
 import {nextTick, ref} from "vue";
 
