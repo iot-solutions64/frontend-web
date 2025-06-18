@@ -1,10 +1,12 @@
 <script setup>
- import NavbarComponent from './shared/components/Navbar.component.vue'
- import store from "./security/services/authentication.store.old.js";
+import NavbarComponent from './shared/components/Navbar.component.vue'
+import {useAuthenticationStore} from "@/security/services/authentication.store.js";
+
+const authenticationStore = useAuthenticationStore();
 </script>
 
 <template>
-  <NavbarComponent v-if="store.getters.isAuthenticated"/>
+  <NavbarComponent v-if="authenticationStore.signedIn"/>
   <router-view/>
 </template>
 

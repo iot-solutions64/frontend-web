@@ -1,12 +1,10 @@
 import {defineStore} from "pinia";
 import {AuthenticationService} from "./authentication.service";
 import {SignInRequest} from "../models/sign-in.request.entity";
-import {Router} from "vue-router";
+import router from "../../shared/router/index.js";
 import {SignInResponse} from "../models/sign-in.response.entity";
 import {SignUpRequest} from "../models/sign-up.request.entity";
 import {SignUpResponse} from "../models/sign-up.response.entity";
-
-const authenticationService = new AuthenticationService();
 
 /**
  * Authentication store definition
@@ -48,57 +46,51 @@ export const useAuthenticationStore = defineStore('authentication', {
         /**
          * Sign in the user
          * @param signInRequest - The sign-in request
-         * @param router - The router instance
          */
-        async signIn(signInRequest: SignInRequest, router: Router): Promise<void> {
+        async signIn(signInRequest: SignInRequest): Promise<boolean> {
             try {
-                const response = await authenticationService.signIn(signInRequest);
-                const signInResponse = new SignInResponse(
-                    response.data.id,
-                    response.data.username,
-                    response.data.token
-                );
-
+                const authenticationService: AuthenticationService = new AuthenticationService();
+                const signInResponse: SignInResponse = await authenticationService.signIn(signInRequest);
                 this.signedIn = true;
                 this.userId = signInResponse.id;
                 this.username = signInResponse.username;
                 localStorage.setItem('token', signInResponse.token);
-
-                console.log(signInResponse);
-                router.push('terrains');
+                await router.push('/crops');
+                return true;
             } catch (error) {
                 console.error(error);
-                router.push({ name: 'sign-in' });
+                await router.push('sign-in');
+                return false;
             }
         },
 
         /**
          * Sign up the user
          * @param signUpRequest - The sign-up request
-         * @param router - The router instance
          */
-        async signUp(signUpRequest: SignUpRequest, router: Router): Promise<void> {
+        async signUp(signUpRequest: SignUpRequest): Promise<boolean> {
             try {
+                const authenticationService = new AuthenticationService();
                 const response = await authenticationService.signUp(signUpRequest);
-                const signUpResponse = new SignUpResponse(response.data.message);
-                console.log(signUpResponse);
-                router.push({ name: 'sign-in' });
+                const signUpResponse = new SignUpResponse(response.id,response.username, response.role);
+                await router.push('login');
+                return true;
             } catch (error) {
                 console.error(error);
-                router.push({ name: 'sign-up' });
+                await router.push('signup');
+                return false;
             }
         },
 
         /**
          * Sign out the user
-         * @param router - The router instance
          */
-        async signOut(router: Router): Promise<void> {
+        async signOut(): Promise<void> {
             this.signedIn = false;
             this.userId = 0;
             this.username = '';
             localStorage.removeItem('token');
-            router.push({ name: 'sign-in' });
+            await router.push('login');
         }
     }
 });

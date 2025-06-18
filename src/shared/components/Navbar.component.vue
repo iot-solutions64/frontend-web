@@ -1,10 +1,11 @@
-<script setup>
-import store from '../../security/services/authentication.store.old.js'
+<script setup lang="ts">
 import {useRouter} from "vue-router";
-import {nextTick, ref} from "vue";
+import {ref} from "vue";
+import {useAuthenticationStore} from "@/security/services/authentication.store.js";
 
 const router = useRouter()
 const menu = ref()
+const authenticationStore = useAuthenticationStore();
 
 const items = [
   {
@@ -22,9 +23,7 @@ const items = [
   {
     label: 'Salir',
     icon: 'pi pi-sign-out',
-    command: () => { store.dispatch('logout').then(
-      () => { router.push('/login') }
-    ) }
+    command: () => { logout() }
   }
 ]
 
@@ -33,11 +32,7 @@ const toggle = (event) => {
 };
 
 const logout = () => {
-  store.dispatch('logout').then(() => {
-    nextTick(() => {
-      router.push('/login');
-    })
-  })
+  authenticationStore.signOut();
 }
 
 </script>

@@ -1,32 +1,34 @@
-<script setup>
-import { ref } from 'vue';
-import { AuthenticationServiceOld } from '../services/authentication.service.old.js';
-import router from '../../shared/router/index.js';
+<script setup lang="ts">
+import {computed, ref} from 'vue';
+import {SignUpRequest} from "@/security/models/sign-up.request.entity.js";
+import {useAuthenticationStore} from "@/security/services/authentication.store";
+import {ResponseState} from "@/shared/models/response-states.enum";
 
-const username = ref('');
-const password = ref('');
-const confirmPassword = ref('');
-const error = ref('');
-const authenticationService = new AuthenticationServiceOld();
+const username = ref("");
+const password = ref("");
+const confirmPassword = ref("");
+const isSignUpSuccessful = ref(ResponseState.NOT_EXECUTED);
 
-const register = async () => {
-  error.value = '';
-  if (!username.value || !password.value || !confirmPassword.value) {
-    error.value = 'Todos los campos son obligatorios';
+const error = computed(() => {
+  if(isSignUpSuccessful.value === ResponseState.FAILURE){
+    if(username.value === "" || password.value === "" || confirmPassword.value === "") return "Datos incompletos";
+    else if(password.value !== confirmPassword.value) return "Las contraseñas no coinciden";
+    else return "";
+  }
+  else if(isSignUpSuccessful.value === ResponseState.ERROR) return "Error al crear usuario";
+  else return "";
+});
+
+async function onSignUp() {
+  if (username.value === "" || password.value === "" || confirmPassword.value === "") {
+    isSignUpSuccessful.value = ResponseState.FAILURE;
     return;
   }
-  if (password.value !== confirmPassword.value) {
-    error.value = 'Las contraseñas no coinciden';
-    return;
-  }
-
-  try {
-    await authenticationService.signUp(username.value, password.value);
-    await router.push('/crops');
-  } catch (err) {
-    error.value = 'Error al registrar. Inténtalo nuevamente';
-  }
-};
+  let authenticationStore = useAuthenticationStore();
+  let signUpRequest = new SignUpRequest(username.value, password.value, ["ROLE_USER"]);
+  const response = await authenticationStore.signUp(signUpRequest);
+  (response)? isSignUpSuccessful.value = ResponseState.SUCCESSFUL : isSignUpSuccessful.value = ResponseState.ERROR;
+}
 </script>
 
 <template>
@@ -38,7 +40,7 @@ const register = async () => {
       <pv-card class="signup-card" style="width: 550px; height: 620px;">
         <template #title>
           <h3>Crear cuenta</h3>
-          <p v-if="error">{{ error }}</p>
+          <p v-if="error !== ''">{{ error }}</p>
         </template>
         <template #content>
           <div class="signup-form">
@@ -66,7 +68,7 @@ const register = async () => {
               <label>Confirmar Contraseña</label>
             </pv-ifta-label>
 
-            <pv-button @click="register" label="Registrarse" style="margin: 0 auto; width: 60%;" />
+            <pv-button @click="onSignUp" label="Registrarse" style="margin: 0 auto; width: 60%;" />
             <router-link to="/login"
                          style="text-decoration: none; color:var(--text-color);">
               ¿Ya tienes cuenta? <u>Inicia sesión</u>

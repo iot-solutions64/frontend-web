@@ -6,7 +6,6 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import {definePreset} from "@primeuix/themes";
-import store from "./security/services/authentication.store.old.js";
 import router from "./shared/router/index.js";
 // PrimeVue components
 import Button from 'primevue/button';
@@ -23,12 +22,15 @@ import Dialog from 'primevue/dialog';
 import InputNumber from 'primevue/inputnumber';
 import Toast from 'primevue/toast';
 import Chart from 'primevue/chart';
+import ProgressSpinner from 'primevue/progressspinner';
 import Select from "primevue/select";
 import SelectButton from 'primevue/selectbutton';
 // PrimeVue services
 import ToastService from 'primevue/toastservice';
 // PrimeVue directives
 import Tooltip from 'primevue/tooltip';
+import {createPinia} from "pinia";
+const pinia = createPinia();
 
 const blue = definePreset(Aura, {
     semantic: {
@@ -86,7 +88,7 @@ app.use(PrimeVue, {
         }
     }
 });
-app.use(store)
+app.use(pinia)
 app.use(router)
 app.component('pv-button', Button)
 app.component('pv-menu', Menu)
@@ -102,6 +104,7 @@ app.component('pv-dialog', Dialog)
 app.component('pv-input-number', InputNumber)
 app.component('pv-toast', Toast)
 app.component('pv-chart', Chart)
+app.component('pv-progress-spinner', ProgressSpinner)
 app.component('pv-select', Select)
 app.component('pv-select-button', SelectButton)
 app.use(ToastService)

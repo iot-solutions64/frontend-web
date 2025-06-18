@@ -19,11 +19,11 @@ export const authenticationGuard = (
 ): void => {
     const authenticationStore = useAuthenticationStore();
     const isAnonymous = !authenticationStore.isSignedIn;
-    const publicRoutes = ['/sign-in', '/sign-up', '/welcome', '/page-not-found'];
+    const publicRoutes = ['/login', '/signup'];
     const routeRequiresToBeAuthenticated = !publicRoutes.includes(to.path);
 
     if (isAnonymous && routeRequiresToBeAuthenticated) {
-        next('/welcome');
+        next('/login');
     } else {
         next();
     }
