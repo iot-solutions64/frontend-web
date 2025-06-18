@@ -9,6 +9,14 @@ const password = ref("");
 const confirmPassword = ref("");
 const isSignUpSuccessful = ref(ResponseState.NOT_EXECUTED);
 
+const showSignUpComponent = computed(() => {
+  return (
+      (isSignUpSuccessful.value === ResponseState.NOT_EXECUTED) ||
+      (isSignUpSuccessful.value === ResponseState.FAILURE) ||
+      (isSignUpSuccessful.value === ResponseState.ERROR)
+  );
+});
+
 const error = computed(() => {
   if(isSignUpSuccessful.value === ResponseState.FAILURE){
     if(username.value === "" || password.value === "" || confirmPassword.value === "") return "Datos incompletos";
@@ -24,6 +32,7 @@ async function onSignUp() {
     isSignUpSuccessful.value = ResponseState.FAILURE;
     return;
   }
+  isSignUpSuccessful.value = ResponseState.LOADING;
   let authenticationStore = useAuthenticationStore();
   let signUpRequest = new SignUpRequest(username.value, password.value, ["ROLE_USER"]);
   const response = await authenticationStore.signUp(signUpRequest);
@@ -37,7 +46,7 @@ async function onSignUp() {
       <img src="/assets/images/hydrosmart-logo.png" style="width: 350px; height: 350px;" alt="software logo" />
     </div>
     <div class="right">
-      <pv-card class="signup-card" style="width: 550px; height: 620px;">
+      <pv-card class="signup-card" style="width: 550px; height: 620px;" v-if="showSignUpComponent">
         <template #title>
           <h3>Crear cuenta</h3>
           <p v-if="error !== ''">{{ error }}</p>
@@ -76,6 +85,10 @@ async function onSignUp() {
           </div>
         </template>
       </pv-card>
+      <div style="width: 550px; height: 560px; display: flex; align-items: center; justify-content: center" v-else>
+        <pv-progress-spinner style="width: 50px; height: 50px" strokeWidth="8" fill="transparent"
+                             animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
+      </div>
     </div>
   </div>
 </template>
