@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import { onMounted, ref } from "vue";
 import { Temperature } from "../models/temperature.entity";
 import { Humidity } from "../models/humidity.entity";
@@ -43,7 +43,7 @@ function goToCropSystem() {
 </script>
 
 <template>
-  <DefaultHeader title="Detalle del Proyecto" :show-back-button="true"/>
+  <DefaultHeader title="Detalle del Cultivo" :show-back-button="true"/>
   <main>
     <h4 class="title">Información de los sensores</h4>
     <article class="w-10 lg:w-8 mx-auto p-3 border-round-xl shadow-2 surface-card m-5">

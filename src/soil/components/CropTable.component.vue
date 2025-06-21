@@ -20,7 +20,7 @@ const irrigationOptions = ref(["On", "Off"]);
       <pv-column field="maxLiters" header="Cantidad Máxima (L)"></pv-column>
       <pv-column header="Riego Automático">
         <template #body="slotProps">
-          <pv-select-button v-model="slotProps.data.autoIrrigation" :options="irrigationOptions"/>
+          <pv-select-button v-model="slotProps.data.autoIrrigation" :options="irrigationOptions" :allow-empty="false"/>
         </template>
       </pv-column>
       <pv-column header="Acciones">

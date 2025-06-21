@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import {computed, onMounted, ref} from "vue";
 import {Record} from "../models/record.entity";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";

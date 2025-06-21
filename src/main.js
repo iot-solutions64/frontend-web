@@ -30,7 +30,9 @@ import ToastService from 'primevue/toastservice';
 // PrimeVue directives
 import Tooltip from 'primevue/tooltip';
 import {createPinia} from "pinia";
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 const blue = definePreset(Aura, {
     semantic: {
@@ -88,8 +90,8 @@ app.use(PrimeVue, {
         }
     }
 });
-app.use(pinia)
 app.use(router)
+app.use(pinia)
 app.component('pv-button', Button)
 app.component('pv-menu', Menu)
 app.component('pv-card', Card)

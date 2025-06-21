@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import WaterDropIcon from "../../shared/custom-icons/WaterDrop.icon.vue";
 
 defineOptions({

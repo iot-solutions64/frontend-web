@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from "../router/index.js";
+import router from "../router";
 defineOptions({
   name: "DefaultHeader"
 });

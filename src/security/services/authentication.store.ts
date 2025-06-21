@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {AuthenticationService} from "./authentication.service";
 import {SignInRequest} from "../models/sign-in.request.entity";
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import {SignInResponse} from "../models/sign-in.response.entity";
 import {SignUpRequest} from "../models/sign-up.request.entity";
 import {SignUpResponse} from "../models/sign-up.response.entity";
@@ -13,7 +13,11 @@ import {SignUpResponse} from "../models/sign-up.response.entity";
  * It provides getters to access the current user id, username, and token.
  * It also provides actions to sign in, sign up, and sign out.
  */
+
+const authenticationService: AuthenticationService = new AuthenticationService();
+
 export const useAuthenticationStore = defineStore('authentication', {
+    persist: true,
     state: () => ({
         signedIn: false as boolean,
         userId: 0 as number,
@@ -49,7 +53,6 @@ export const useAuthenticationStore = defineStore('authentication', {
          */
         async signIn(signInRequest: SignInRequest): Promise<boolean> {
             try {
-                const authenticationService: AuthenticationService = new AuthenticationService();
                 const signInResponse: SignInResponse = await authenticationService.signIn(signInRequest);
                 this.signedIn = true;
                 this.userId = signInResponse.id;
@@ -59,7 +62,7 @@ export const useAuthenticationStore = defineStore('authentication', {
                 return true;
             } catch (error) {
                 console.error(error);
-                await router.push('sign-in');
+                await router.push('/login');
                 return false;
             }
         },
@@ -70,14 +73,13 @@ export const useAuthenticationStore = defineStore('authentication', {
          */
         async signUp(signUpRequest: SignUpRequest): Promise<boolean> {
             try {
-                const authenticationService = new AuthenticationService();
                 const response = await authenticationService.signUp(signUpRequest);
                 const signUpResponse = new SignUpResponse(response.id,response.username, response.role);
-                await router.push('login');
+                await router.push('/login');
                 return true;
             } catch (error) {
                 console.error(error);
-                await router.push('signup');
+                await router.push('/signup');
                 return false;
             }
         },
@@ -90,7 +92,7 @@ export const useAuthenticationStore = defineStore('authentication', {
             this.userId = 0;
             this.username = '';
             localStorage.removeItem('token');
-            await router.push('login');
+            await router.push('/login');
         }
     }
 });

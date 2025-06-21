@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {System} from "../models/system.entity.js";
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import GearIcon from "../../shared/custom-icons/Gear.icon.vue";
 
 defineOptions({

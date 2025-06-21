@@ -5,10 +5,10 @@ import AddButton from '../../shared/components/AddButton.component.vue';
 import AddCropDialog from '../components/AddCropDialog.component.vue';
 import DeleteCropDialog from '../components/DeleteCropDialog.component.vue';
 import EditCropDialog from '../components/EditCropDialog.component.vue';
-import router from "../../shared/router/index.js";
+import router from "@/shared/router";
 import {Crop} from "../models/crop.entity.js";
-import {Tank} from "../../irrigation/models/tank.entity";
-import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
+import {Tank} from "@/irrigation/models/tank.entity";
+import DefaultHeader from "@/shared/components/DefaultHeader.component.vue";
 
 const crops = ref([]);
 const tanks = ref([]);

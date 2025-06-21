@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import {onMounted, ref} from "vue";
 import AddButton from '../../shared/components/AddButton.component.vue';
 import AddTankDialog from '../components/AddTankDialog.component.vue';

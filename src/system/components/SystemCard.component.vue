@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {System} from "../models/system.entity.js";
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import BatteryIcon from "../../shared/custom-icons/Battery.icon.vue";
 
 defineOptions({
