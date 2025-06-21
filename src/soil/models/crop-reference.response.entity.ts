@@ -7,12 +7,12 @@ export class CropReferenceResponse {
     cropName: string;
 
     constructor(
-        cropId: 0,
-        userId: 0,
-        temperatureId: 0,
-        humidityId: 0,
-        waterTankId: 0,
-        cropName: ""
+        cropId: number,
+        userId: number,
+        temperatureId: number,
+        humidityId: number,
+        waterTankId: number,
+        cropName: string
     ) {
         this.cropId = cropId;
         this.userId = userId;
