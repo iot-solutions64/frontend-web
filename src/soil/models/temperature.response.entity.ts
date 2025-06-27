@@ -4,7 +4,7 @@ export class TemperatureResponse {
     temperatureMaxThreshold: number;
     temperatureStatus: string;
 
-    constructor(temperature: 0, temperatureMinThreshold: 0, temperatureMaxThreshold: 0, temperatureStatus: "") {
+    constructor(temperature: number, temperatureMinThreshold: number, temperatureMaxThreshold: number, temperatureStatus: string) {
         this.temperature = temperature;
         this.temperatureMinThreshold = temperatureMinThreshold;
         this.temperatureMaxThreshold = temperatureMaxThreshold;

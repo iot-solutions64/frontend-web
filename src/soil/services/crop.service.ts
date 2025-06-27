@@ -39,7 +39,7 @@ export class CropService {
     }
 
     async getLightCropsByUserId(userId: number): Promise<CropLightResponse[]>{
-        const response = await http.get(`${this.endpoint}/${userId}/light`);
+        const response = await http.get(`${this.endpoint}/user/${userId}/light`);
         return response.data.map(
             (crop: CropLightResponse) =>
                 new CropLightResponse(
@@ -52,7 +52,8 @@ export class CropService {
                     crop.irrigationStartTime,
                     crop.irrigationDurationInMinutes,
                     crop.irrigationStatus
-                ));
+                )
+        );
     }
 
     async getReferenceCropById(cropId: number): Promise<CropReferenceResponse>{
@@ -113,28 +114,26 @@ export class CropService {
 
     async patchTemperatureByCropId(cropId: number, temperatureRequest: TemperatureRequest): Promise<string>{
         const response = await http.patch(`${this.endpoint}/${cropId}/temperature`, temperatureRequest);
-        return String(response);
+        return String(response.data);
     }
 
     async patchTemperatureThresholdByCropId(cropId: number, temperatureThresholdRequest: TemperatureThresholdRequest): Promise<TemperatureResponse>{
         const response = await http.patch(`${this.endpoint}/${cropId}/temperature-threshold`, temperatureThresholdRequest);
-        return new TemperatureResponse(
-            response.data.temperature,
-            response.data.temperatureMinThreshold,
-            response.data.temperatureMaxThreshold,
-            response.data.temperatureStatus
-        );
+        return new TemperatureResponse(response.data.temperature, response.data.temperatureMinThreshold, response.data.temperatureMaxThreshold, response.data.temperatureStatus);
     }
 
-    async updateHumidityByCropId(cropId: number, humidityRequest: HumidityRequest): Promise<string>{
-        return http.put(`${this.endpoint}/${cropId}/humidity`, humidityRequest);
+    async patchHumidityByCropId(cropId: number, humidityRequest: HumidityRequest): Promise<string>{
+        const response = await http.put(`${this.endpoint}/${cropId}/humidity`, humidityRequest);
+        return String(response.data);
     }
 
-    async patchHumidityByCropId(cropId: number, humidity: number): Promise<HumidityResponse>{
-        return http.patch(`${this.endpoint}/${cropId}/humidity`, humidity);
+    async patchHumidityThresholdByCropId(cropId: number, humidity: number): Promise<HumidityResponse>{
+        const response = await http.patch(`${this.endpoint}/${cropId}/humidity`, humidity);
+        return new HumidityResponse(response.data.humidity, response.data.humidityMinThreshold, response.data.humidityMaxThreshold, response.data.humidityStatus);
     }
 
     async deleteByCropId(cropId: number): Promise<string> {
-        return http.delete(`${this.endpoint}/${cropId}`);
+        const response = await http.delete(`${this.endpoint}/${cropId}`);
+        return String(response.data);
     }
 }

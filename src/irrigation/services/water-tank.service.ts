@@ -12,26 +12,60 @@ export class WaterTankService{
     }
 
     async getAllWaterTanksByUserId(userId: number): Promise<WaterTankResponse[]>{
-        return http.get(`${this.endpoint}/user/${userId}`);
+        const response = await http.get(`${this.endpoint}/user/${userId}`);
+        return response.data.map(
+            (waterTank: WaterTankResponse) =>
+                new WaterTankResponse(
+                    waterTank.name,
+                    waterTank.waterAmountRemaining,
+                    waterTank.maxWaterCapacity,
+                    waterTank.status
+                )
+        );
     }
 
     async createWaterTank(waterTankRequest: WaterTankRequest): Promise<WaterTankResponse>{
-        return http.post(this.endpoint, waterTankRequest);
+        const response = await http.post(this.endpoint, waterTankRequest);
+        return new WaterTankResponse(
+            response.data.name,
+            response.data.waterAmountRemaining,
+            response.data.maxWaterCapacity,
+            response.data.status
+        );
     }
 
     async patchWaterRemaining(waterRemainingRequest: WaterRemainingRequest): Promise<WaterTankResponse>{
-        return http.patch(`${this.endpoint}/water-remaining`, waterRemainingRequest);
+        const response = await http.patch(`${this.endpoint}/water-remaining`, waterRemainingRequest);
+        return new WaterTankResponse(
+            response.data.name,
+            response.data.waterAmountRemaining,
+            response.data.maxWaterCapacity,
+            response.data.status
+        );
     }
 
     async patchWaterTankName(waterTankNameRequest: WaterTankNameRequest): Promise<WaterTankResponse>{
-        return http.patch(`${this.endpoint}/name`, waterTankNameRequest);
+        const response = await http.patch(`${this.endpoint}/name`, waterTankNameRequest);
+        return new WaterTankResponse(
+            response.data.name,
+            response.data.waterAmountRemaining,
+            response.data.maxWaterCapacity,
+            response.data.status
+        );
     }
 
     async patchWaterTankStatus(waterTankId: number, status: string): Promise<WaterTankResponse>{
-        return http.patch(`${this.endpoint}/${waterTankId}/status/${status}`);
+        const response = await http.patch(`${this.endpoint}/${waterTankId}/status/${status}`);
+        return new WaterTankResponse(
+            response.data.name,
+            response.data.waterAmountRemaining,
+            response.data.maxWaterCapacity,
+            response.data.status
+        );
     }
 
     async deleteWaterTankById(waterTankId: number): Promise<string>{
-        return http.delete(`${this.endpoint}/${waterTankId}`);
+        const response = await http.delete(`${this.endpoint}/${waterTankId}`);
+        return String(response.data);
     }
 }

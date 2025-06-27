@@ -4,7 +4,7 @@ export class HumidityResponse {
     humidityMaxThreshold: number;
     humidityStatus: string;
 
-    constructor(humidity: 0, humidityMinThreshold: 0, humidityMaxThreshold: 0, humidityStatus: "") {
+    constructor(humidity: number, humidityMinThreshold: number, humidityMaxThreshold: number, humidityStatus: string) {
         this.humidity = humidity;
         this.humidityMinThreshold = humidityMinThreshold;
         this.humidityMaxThreshold = humidityMaxThreshold;
