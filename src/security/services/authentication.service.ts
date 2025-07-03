@@ -11,7 +11,7 @@ export class AuthenticationService {
         return new SignUpResponse(
           response.data.id,
           response.data.username,
-            response.data.role
+          response.data.role
         );
     }
 

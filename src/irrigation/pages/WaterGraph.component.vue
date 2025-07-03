@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import router from "../../shared/router";
 import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
-const monthlyHistory = ref([]);
+const monthlyHistory = ref<{ mes: string; cantidad: number }[]>([]);
 const chartData = ref();
 const chartOptions = ref();
 

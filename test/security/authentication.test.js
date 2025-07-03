@@ -1,6 +1,6 @@
 import { expect, test, beforeEach } from "vitest";
-import { AuthenticationServiceOld } from "../../src/security/services/authentication.service.old.js";
-import {LoginResponse} from "../../src/security/models/login-response.entity.js";
+import { AuthenticationService } from "../../src/security/services/authentication.service.ts";
+import {LoginResponse} from "@/security/models/login-response.entity.ts";
 
 // Mock de localStorage
 beforeEach(() => {
@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 test("User login successful", async () => {
-    const authService = new AuthenticationServiceOld();
+    const authService = new AuthenticationService();
     const response = await authService.signIn("string", "string");
     const loginResponse = LoginResponse.fromJson(response.data);
     console.log("loginResponse:", loginResponse);
@@ -21,7 +21,7 @@ test("User login successful", async () => {
 });
 
 test("User login fail", async () => {
-    const authService = new AuthenticationServiceOld();
+    const authService = new AuthenticationService();
     try {
         const response = await authService.signIn("invalidUser", "invalidPassword");
     } catch(e) {

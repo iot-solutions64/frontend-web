@@ -76,7 +76,7 @@ watch(localVisible, (val) => {
   emit('update:visible', val);
   if (!val) {
     name.value = '';
-    totalLiters.value = null;
+    totalLiters.value = 0;
   }
 });
 
@@ -86,7 +86,7 @@ const closeDialog = () => {
 
 const handleSave = () => {
   error.value = false;
-  if (!name.value || totalLiters.value === null || totalLiters.value < 0) {
+  if (!name.value || totalLiters.value <= 0) {
     error.value = true;
     return;
   }

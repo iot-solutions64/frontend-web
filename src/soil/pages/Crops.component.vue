@@ -11,22 +11,22 @@ import DefaultHeader from "@/shared/components/DefaultHeader.component.vue";
 import {CropLightResponse} from "@/soil/models/crop.light.response.entity";
 import {CropService} from "@/soil/services/crop.service";
 import {useAuthenticationStore} from "@/security/services/authentication.store";
-import {WaterTankResponse} from "@/irrigation/models/water-tank.response.entity";
 import {WaterTankService} from "@/irrigation/services/water-tank.service";
 import {CropRequest} from "@/soil/models/crop.request.entity";
+import {Tank} from "@/irrigation/models/tank.entity";
 
 //Old
-const crops = ref([]);
+const crops = ref<Crop[]>([]);
 const showAddDialog = ref(false);
-const selectedCropToDelete = ref(CropLightResponse);
+const selectedCropToDelete = ref<CropLightResponse | null>(null);
 const showDeleteDialog = ref(false);
 const cropToEdit = ref(new Crop());
 const showEditDialog = ref(false);
 
 //New
-const cropList = ref([]<CropLightResponse>);
+const cropList = ref<CropLightResponse[]>([]);
 const cropService = new CropService();
-const tankList = ref([]<WaterTankResponse>);
+const tankList = ref<Tank[]>([]);
 const waterTankService = new WaterTankService();
 
 onMounted(() => {
@@ -65,14 +65,15 @@ function saveCrop(newCrop: CropRequest) {
 //New
 async function getCrops(){
   const authenticationStore = useAuthenticationStore();
-  const userId: Number = authenticationStore.userId;
+  const userId: number = authenticationStore.userId;
   cropList.value = await cropService.getLightCropsByUserId(userId);
 }
 
 async function getTanks(){
   const authenticationStore = useAuthenticationStore();
-  const userId: Number = authenticationStore.userId;
-  tankList.value = await waterTankService.getAllWaterTanksByUserId(userId);
+  const userId: number = authenticationStore.userId;
+  const response = await waterTankService.getAllWaterTanksByUserId(userId);
+  tankList.value = response.map(tank => new Tank(tank.id, tank.name, tank.maxWaterCapacity, tank.waterAmountRemaining, tank.status));
 }
 
 function openDeleteCropDialog(crop: CropLightResponse) {

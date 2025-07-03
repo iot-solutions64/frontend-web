@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import {computed, onMounted, ref, watch} from 'vue';
+import {computed, PropType, ref, watch} from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { Crop } from "../models/crop.entity.js";
-import {WaterTankResponse} from "@/irrigation/models/water-tank.response.entity";
 import TemperatureIcon from "@/shared/custom-icons/Temperature.icon.vue";
 import WaterDropIcon from "@/shared/custom-icons/WaterDrop.icon.vue";
+import {Tank} from "@/irrigation/models/tank.entity";
 
 const props = defineProps({
   visible: {
@@ -12,7 +12,7 @@ const props = defineProps({
     required: true,
   },
   tanks: {
-    type: []<WaterTankResponse>,
+    type: Array as PropType<Tank[]>,
     required: true,
   }
 });
@@ -21,7 +21,7 @@ const emit = defineEmits(['update:visible', 'save']);
 
 //Crop Data
 const name = ref("");
-const tank = ref(WaterTankResponse);
+const tank = ref<Tank | null>();
 
 //Temperature Data
 const temperatureMinThreshold = ref(0);
@@ -57,7 +57,7 @@ watch(localVisible, (val) => {
   if (!val) {
     name.value = '';
     tank.value = null;
-    maxQuantity.value = null;
+    maxQuantity.value = 0;
     page.value = 1;
   }
 });
@@ -68,11 +68,9 @@ const closeDialog = () => {
 };
 
 const handleSave = () => {
-  error.value = false;
-  if (!tank.value || maxQuantity.value === null || maxQuantity.value < 0) {
-    error.value = true;
-    return;
-  }
+  wasConfirmButtonPressed.value = false;
+  if (error.value) return;
+  if (!tank.value) return;
   emit('save', new Crop(0, name.value, maxQuantity.value, false, tank.value.id));
   closeDialog();
   toast.add({ severity: 'success', summary: 'Cultivo añadido', detail: `El cultivo "${name.value}" se ha añadido exitosamente.`, life: 3000 });

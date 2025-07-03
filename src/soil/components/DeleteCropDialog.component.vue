@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import {PropType, ref, watch} from 'vue';
 import { useToast } from 'primevue/usetoast';
 import {CropLightResponse} from "@/soil/models/crop.light.response.entity";
 
 const props = defineProps({
   visible: Boolean,
-  crop: CropLightResponse
+  crop: {
+    type: Object as PropType<CropLightResponse | null>,
+    required: true
+  }
 });
 
 const emit = defineEmits(['update:visible', 'delete']);
@@ -25,6 +28,10 @@ const closeDialog = () => {
 };
 
 const handleDelete = () => {
+  if (!props.crop) {
+    toast.add({ severity: 'error', summary: 'Error', detail: 'No se ha seleccionado un cultivo para eliminar.', life: 3000 });
+    return;
+  }
   emit('delete', props.crop.cropId);
   closeDialog();
   toast.add({ severity: 'success', summary: 'Cultivo eliminado', detail: `El cultivo ${props.crop.cropName} ha sido eliminado.`, life: 3000 });

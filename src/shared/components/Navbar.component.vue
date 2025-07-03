@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {useRouter} from "vue-router";
 import {ref} from "vue";
-import {useAuthenticationStore} from "@/security/services/authentication.store.js";
+import {useAuthenticationStore} from "../../security/services/authentication.store";
 
 const router = useRouter()
 const menu = ref()
@@ -27,7 +27,7 @@ const items = [
   }
 ]
 
-const toggle = (event) => {
+const toggle = (event: any) => {
   menu.value.toggle(event);
 };
 

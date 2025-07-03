@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import router from "../../shared/router";
 import {onMounted, ref} from "vue";
 import AddButton from '../../shared/components/AddButton.component.vue';
 import AddTankDialog from '../components/AddTankDialog.component.vue';
@@ -12,7 +11,7 @@ import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 const showAddDialog = ref(false);
 const showEditDialog = ref(false);
 const showDeleteDialog = ref(false);
-const tanks = ref([]);
+const tanks = ref<Tank[]>([]);
 const tankToEdit = ref(new Tank());
 const tankToDelete = ref(new Tank());
 

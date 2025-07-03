@@ -4,9 +4,7 @@ import router from "../../shared/router";
 import {System} from "../models/system.entity";
 import {Subsystem} from "../models/subsystem.entity";
 import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
-import GearIcon from "../../shared/custom-icons/Gear.icon.vue";
 import AddSystemCard from "../components/AddSystemCard.component.vue";
-import SystemCard from "../components/SystemCard.component.vue";
 
 const loading = ref(true);
 const systems = ref<any[]>([]);

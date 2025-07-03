@@ -7,7 +7,7 @@ import AddButton from "../../shared/components/AddButton.component.vue";
 import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 import SystemCard from "../components/SystemCard.component.vue";
 
-const systems = ref([]);
+const systems = ref<System[]>([]);
 onMounted(() => {
   // TODO: Fetch systems from the API
   systems.value = [

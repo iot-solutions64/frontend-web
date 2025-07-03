@@ -2,18 +2,19 @@
 import {computed, ref, watch} from 'vue';
 import { useToast } from 'primevue/usetoast';
 import { Crop } from "../models/crop.entity.js";
+import {Tank} from "@/irrigation/models/tank.entity";
 
-const props = defineProps({
-  visible: Boolean,
-  crop: Crop,
-  tanks: Array
-});
+const props = defineProps<{
+  visible: boolean;
+  crop: Crop;
+  tanks: Tank[];
+}>();
 const emit = defineEmits(['update:visible', 'save']);
 
 const localVisible = ref(props.visible);
 const name = ref('');
 const maxQuantity = ref(0);
-const tank = ref(null);
+const tank = ref<Tank | null>(null);
 const step = ref(1);
 const error = ref(false);
 const toast = useToast();
@@ -31,7 +32,7 @@ watch(localVisible, (val) => {
   emit('update:visible', val);
   if (!val) {
     name.value = '';
-    maxQuantity.value = null;
+    maxQuantity.value = 0;
     tank.value = null;
     step.value = 1;
     error.value = false;
@@ -58,7 +59,7 @@ const goToStep2 = () => {
 
 const handleSave = () => {
   error.value = false;
-  if (!tank.value || maxQuantity.value === null || maxQuantity.value < 0) {
+  if (!tank.value || maxQuantity.value <= 0 || !name.value) {
     error.value = true;
     return;
   }

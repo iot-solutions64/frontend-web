@@ -13,8 +13,8 @@ import {TemperatureResponse} from "@/soil/models/temperature.response.entity";
 
 const cropId = ref(0);
 const cropService = new CropService();
-const temperature = ref(TemperatureResponse);
-const humidity = ref(HumidityResponse);
+const temperature = ref<TemperatureResponse | null>(null);
+const humidity = ref<HumidityResponse | null>(null);
 
 onMounted(() => {
   cropId.value = Number(router.currentRoute.value.params.id);
@@ -65,47 +65,47 @@ function goToCropSystem() {
             <th>Recomendaciones</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td class="sensor-column">
-              <WaterDropIcon height="70px" width="70px"/>
-              <p id="humidity-text"><b>Humedad</b></p>
-            </td>
-            <td>
-              <p>{{ humidity.humidity }}%</p>
-            </td>
-            <td v-tooltip="HUMIDITY_SUGGESTIONS[humidity.humidityStatus]?.message">
-              <p>{{ HUMIDITY_SUGGESTIONS[humidity.humidityStatus]?.title }}</p>
-            </td>
-            <td>
-              <pv-button
-                  label="Ver acciones"
-                  icon="pi pi-search"
-                  @click="goToHumidityActions(HUMIDITY_SUGGESTIONS[humidity.humidityStatus]?.id)"
-                  :disabled="humidity.humidityStatus === 'FAVORABLE'"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="sensor-column">
-              <TemperatureIcon height="70px" width="70px"/>
-              <p id="temperature-text"><b>Temperatura</b></p>
-            </td>
-            <td>
-              <p>{{ temperature.temperature }}°C</p>
-            </td>
-            <td v-tooltip="TEMPERATURE_SUGGESTIONS[temperature.temperatureStatus]?.message">
-              <p>{{ TEMPERATURE_SUGGESTIONS[temperature.temperatureStatus]?.title }}</p>
-            </td>
-            <td>
-              <pv-button
-                  label="Ver acciones"
-                  icon="pi pi-search"
-                  @click="goToTemperatureActions(TEMPERATURE_SUGGESTIONS[temperature.temperatureStatus]?.id)"
-                  :disabled="temperature.temperatureStatus === 'FAVORABLE'"
-              />
-            </td>
-          </tr>
+        <tbody v-if="humidity && temperature">
+        <tr>
+          <td class="sensor-column">
+            <WaterDropIcon height="70px" width="70px"/>
+            <p id="humidity-text"><b>Humedad</b></p>
+          </td>
+          <td>
+            <p>{{ humidity.humidity }}%</p>
+          </td>
+          <td v-tooltip="HUMIDITY_SUGGESTIONS[humidity.humidityStatus as keyof typeof HUMIDITY_SUGGESTIONS]?.message">
+            <p>{{ HUMIDITY_SUGGESTIONS[humidity.humidityStatus as keyof typeof HUMIDITY_SUGGESTIONS]?.title }}</p>
+          </td>
+          <td>
+            <pv-button
+                label="Ver acciones"
+                icon="pi pi-search"
+                @click="goToHumidityActions(HUMIDITY_SUGGESTIONS[humidity.humidityStatus as keyof typeof HUMIDITY_SUGGESTIONS]?.id)"
+                :disabled="humidity.humidityStatus === 'FAVORABLE'"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="sensor-column">
+            <TemperatureIcon height="70px" width="70px"/>
+            <p id="temperature-text"><b>Temperatura</b></p>
+          </td>
+          <td>
+            <p>{{ temperature.temperature }}°C</p>
+          </td>
+          <td v-tooltip="TEMPERATURE_SUGGESTIONS[temperature.temperatureStatus as keyof typeof TEMPERATURE_SUGGESTIONS]?.message">
+            <p>{{ TEMPERATURE_SUGGESTIONS[temperature.temperatureStatus as keyof typeof TEMPERATURE_SUGGESTIONS]?.title }}</p>
+          </td>
+          <td>
+            <pv-button
+                label="Ver acciones"
+                icon="pi pi-search"
+                @click="goToTemperatureActions(TEMPERATURE_SUGGESTIONS[temperature.temperatureStatus as keyof typeof TEMPERATURE_SUGGESTIONS]?.id)"
+                :disabled="temperature.temperatureStatus === 'FAVORABLE'"
+            />
+          </td>
+        </tr>
         </tbody>
       </table>
     </article>
