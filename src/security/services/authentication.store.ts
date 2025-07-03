@@ -17,6 +17,7 @@ import {SignUpResponse} from "../models/sign-up.response.entity";
 const authenticationService: AuthenticationService = new AuthenticationService();
 
 export const useAuthenticationStore = defineStore('authentication', {
+    // @ts-ignore
     persist: true,
     state: () => ({
         signedIn: false as boolean,

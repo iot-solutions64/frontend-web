@@ -15,7 +15,7 @@ const irrigationOptions = ref(["On", "Off"]);
 
 <template>
   <div class="flex justify-content-center m mx-auto">
-    <pv-data-table :value="items">
+    <pv-data-table :value="items" table-style="min-width: 50rem" style="overflow-x: scroll">
       <pv-column field="cropId" header="ID"></pv-column>
       <pv-column field="cropName" header="Nombre"></pv-column>
       <pv-column field="waterAmountRemaining" header="Cantidad Restante de Agua"></pv-column>

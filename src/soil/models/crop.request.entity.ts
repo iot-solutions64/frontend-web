@@ -14,20 +14,20 @@ export class CropRequest {
     irrigationDurationInMinutes: number;
     irrigationMaxWaterUsage: number;
 
-    constructor(data: CropRequest) {
-        this.name = data.name;
-        this.userId = data.userId;
-        this.waterTankId = data.waterTankId;
-        this.temperatureMinThreshold = data.temperatureMinThreshold;
-        this.temperatureMaxThreshold = data.temperatureMaxThreshold;
-        this.humidityMinThreshold = data.humidityMinThreshold;
-        this.humidityMaxThreshold = data.humidityMaxThreshold;
-        this.hourFrequency = data.hourFrequency;
-        this.irrigationStartDate = data.irrigationStartDate;
-        this.irrigationStartTime = data.irrigationStartTime;
-        this.irrigationDisallowedStartTime = data.irrigationDisallowedStartTime;
-        this.irrigationDisallowedEndTime = data.irrigationDisallowedEndTime;
-        this.irrigationDurationInMinutes = data.irrigationDurationInMinutes;
-        this.irrigationMaxWaterUsage = data.irrigationMaxWaterUsage;
+    constructor(name: string, userId: number, waterTankId: number, temperatureMinThreshold: number, temperatureMaxThreshold: number, humidityMinThreshold: number, humidityMaxThreshold: number, hourFrequency: number, irrigationStartDate: string, irrigationStartTime: string, irrigationDisallowedStartTime: string, irrigationDisallowedEndTime: string, irrigationDurationInMinutes: number, irrigationMaxWaterUsage: number) {
+        this.name = name;
+        this.userId = userId;
+        this.waterTankId = waterTankId;
+        this.temperatureMinThreshold = temperatureMinThreshold;
+        this.temperatureMaxThreshold = temperatureMaxThreshold;
+        this.humidityMinThreshold = humidityMinThreshold;
+        this.humidityMaxThreshold = humidityMaxThreshold;
+        this.hourFrequency = hourFrequency;
+        this.irrigationStartDate = irrigationStartDate;
+        this.irrigationStartTime = irrigationStartTime;
+        this.irrigationDisallowedStartTime = irrigationDisallowedStartTime;
+        this.irrigationDisallowedEndTime = irrigationDisallowedEndTime;
+        this.irrigationDurationInMinutes = irrigationDurationInMinutes;
+        this.irrigationMaxWaterUsage = irrigationMaxWaterUsage;
     }
 }
