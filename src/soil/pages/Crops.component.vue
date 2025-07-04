@@ -12,10 +12,10 @@ import {CropService} from "@/soil/services/crop.service";
 import {useAuthenticationStore} from "@/security/services/authentication.store";
 import {WaterTankService} from "@/irrigation/services/water-tank.service";
 import {CropRequest} from "@/soil/models/crop.request.entity";
-import {Tank} from "@/irrigation/models/tank.entity";
 import {CropDetailedResponse} from "@/soil/models/crop-detailed.response.entity";
 import {HumidityThresholdRequest} from "@/soil/models/humidity-threshold.request.entity";
 import {TemperatureThresholdRequest} from "@/soil/models/temperature-threshold.request.entity";
+import {WaterTankResponse} from "@/irrigation/models/water-tank.response.entity";
 
 const showAddDialog = ref(false);
 const selectedCropToDelete = ref<CropLightResponse | null>(null);
@@ -26,7 +26,7 @@ const showEditDialog = ref(false);
 //New
 const cropList = ref<CropLightResponse[]>([]);
 const cropService = new CropService();
-const tankList = ref<Tank[]>([]);
+const tankList = ref<WaterTankResponse[]>([]);
 const waterTankService = new WaterTankService();
 
 onMounted(() => {
@@ -94,7 +94,7 @@ async function getTanks(){
   const authenticationStore = useAuthenticationStore();
   const userId: number = authenticationStore.userId;
   const response = await waterTankService.getAllWaterTanksByUserId(userId);
-  tankList.value = response.map(tank => new Tank(tank.id, tank.name, tank.maxWaterCapacity, tank.waterAmountRemaining, tank.status));
+  tankList.value = response.map(tank => new WaterTankResponse(tank.id, tank.name, tank.maxWaterCapacity, tank.waterAmountRemaining, tank.status));
 }
 
 function openDeleteCropDialog(crop: CropLightResponse) {

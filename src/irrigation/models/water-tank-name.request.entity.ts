@@ -2,7 +2,7 @@ export class WaterTankNameRequest {
     id: number;
     name: string;
 
-    constructor(id: 0, name: "") {
+    constructor(id: number = 0, name: string = "") {
         this.id = id;
         this.name = name;
     }

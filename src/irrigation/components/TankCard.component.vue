@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import {Tank} from "../models/tank.entity";
+import { WaterTankResponse } from "@/irrigation/models/water-tank.response.entity";
 import WaterIcon from "../../shared/custom-icons/WaterIcon.icon.vue";
 
-const props = defineProps(
-    {
-      tank: {
-        type: Tank,
-        required: true,
-      },
-    }
-);
+const props = defineProps({
+  tank: {
+    type: Object as () => WaterTankResponse,
+    required: true,
+  },
+});
 
 const emit = defineEmits(['openEdit', 'openDelete']);
 
@@ -20,30 +18,31 @@ function editTank() {
 function deleteTank() {
   emit('openDelete', props.tank);
 }
-
 </script>
 
 <template>
   <div class="tank-card">
     <aside class="left-side">
-      <WaterIcon height="80px" width="80px"/>
+      <WaterIcon height="80px" width="80px" />
     </aside>
     <aside class="right-side">
       <div>
         <h5>{{ tank.name }}</h5>
-        <p>{{ tank.remainingLiters }} L / {{ tank.totalLiters }} L</p>
+        <p>{{ tank.waterAmountRemaining }} L / {{ tank.maxWaterCapacity }} L</p>
       </div>
       <div class="flex gap-2">
         <pv-button
             icon="pi pi-pencil"
             class="p-button-rounded p-button-outlined"
             @click="editTank"
-            aria-label="Editar"/>
+            aria-label="Editar"
+        />
         <pv-button
             icon="pi pi-trash"
             class="p-button-rounded p-button-outlined"
             @click="deleteTank"
-            aria-label="Eliminar"/>
+            aria-label="Eliminar"
+        />
       </div>
     </aside>
   </div>

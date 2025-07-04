@@ -1,7 +1,7 @@
 import {WaterTankResponse} from "@/irrigation/models/water-tank.response.entity";
 import http from "@/shared/services/http-common.service";
 import {WaterTankRequest} from "@/irrigation/models/water-tank.request.entity";
-import {WaterRemainingRequest} from "@/irrigation/models/water-remaining.request.entity";
+import {WaterCapacityRequest } from "@/irrigation/models/water-capacity.request.entity";
 import {WaterTankNameRequest} from "@/irrigation/models/water-tank-name.request.entity";
 
 export class WaterTankService{
@@ -36,8 +36,8 @@ export class WaterTankService{
         );
     }
 
-    async patchWaterRemaining(waterRemainingRequest: WaterRemainingRequest): Promise<WaterTankResponse>{
-        const response = await http.patch(`${this.endpoint}/water-remaining`, waterRemainingRequest);
+    async patchWaterCapacity(waterCapacityRequest: WaterCapacityRequest): Promise<WaterTankResponse>{
+        const response = await http.patch(`${this.endpoint}/water-capacity`, waterCapacityRequest);
         return new WaterTankResponse(
             response.data.id,
             response.data.name,

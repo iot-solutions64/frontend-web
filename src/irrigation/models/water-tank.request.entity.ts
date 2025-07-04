@@ -3,7 +3,7 @@ export class WaterTankRequest {
     maxWaterCapacity: number;
     userId: number;
 
-    constructor(name: "", maxWaterCapacity: 0, userId: 0) {
+    constructor(name: string = "", maxWaterCapacity: number = 0, userId: number = 0) {
         this.name = name;
         this.maxWaterCapacity = maxWaterCapacity;
         this.userId = userId;

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useToast } from 'primevue/usetoast';
-import {Tank} from "../models/tank.entity.js";
+import { WaterTankResponse } from "@/irrigation/models/water-tank.response.entity";
 
 const props = defineProps({
   visible: {
@@ -9,10 +9,11 @@ const props = defineProps({
     required: true
   },
   tank: {
-    type: Tank,
+    type: Object as () => WaterTankResponse,
     required: true,
   },
 });
+
 const emit = defineEmits(['update:visible', 'delete']);
 const localVisible = ref(props.visible);
 const toast = useToast();
@@ -31,7 +32,12 @@ const closeDialog = () => {
 const handleDelete = () => {
   emit('delete', props.tank.id);
   closeDialog();
-  toast.add({ severity: 'success', summary: 'Tanque eliminado', detail: `El tanque con nombre '${props.tank.name}' ha sido eliminado.`, life: 3000 });
+  toast.add({
+    severity: 'success',
+    summary: 'Tanque eliminado',
+    detail: `El tanque "${props.tank.name}" ha sido eliminado.`,
+    life: 3000
+  });
 };
 </script>
 
@@ -41,7 +47,7 @@ const handleDelete = () => {
       <h5>Eliminar tanque de agua</h5>
     </template>
     <main>
-      <p>¿Estás seguro de que deseas eliminar este tanque? Esta acción no se puede deshacer.</p>
+      <p>¿Estás seguro de que deseas eliminar el tanque <strong>{{ props.tank.name }}</strong>? Esta acción no se puede deshacer.</p>
     </main>
     <template #footer>
       <div class="footer">
@@ -53,10 +59,10 @@ const handleDelete = () => {
 </template>
 
 <style scoped>
-h5{
-  margin:0;
+h5 {
+  margin: 0;
 }
-.footer{
+.footer {
   width: 100%;
   display: flex;
   justify-content: center;
