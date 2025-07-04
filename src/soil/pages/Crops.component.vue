@@ -17,7 +17,6 @@ import {CropDetailedResponse} from "@/soil/models/crop-detailed.response.entity"
 import {HumidityThresholdRequest} from "@/soil/models/humidity-threshold.request.entity";
 import {TemperatureThresholdRequest} from "@/soil/models/temperature-threshold.request.entity";
 
-//Old
 const showAddDialog = ref(false);
 const selectedCropToDelete = ref<CropLightResponse | null>(null);
 const showDeleteDialog = ref(false);
@@ -78,10 +77,10 @@ function openAddCropDialog() {
   showAddDialog.value = true;
 }
 
-function saveCrop(newCrop: CropRequest) {
-  cropService.createCrop(newCrop);
-  getCrops();
-  getTanks();
+async function saveCrop(newCrop: CropRequest) {
+  await cropService.createCrop(newCrop);
+  await getCrops();
+  await getTanks();
 }
 
 //New
@@ -103,10 +102,10 @@ function openDeleteCropDialog(crop: CropLightResponse) {
   showDeleteDialog.value = true;
 }
 
-function deleteCrop(id: number) {
-  cropService.deleteByCropId(id);
-  getCrops();
-  getTanks();
+async function deleteCrop(id: number) {
+  await cropService.deleteByCropId(id);
+  await getCrops();
+  await getTanks();
 }
 </script>
 
