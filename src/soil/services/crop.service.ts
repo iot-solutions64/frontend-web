@@ -26,7 +26,7 @@ export class CropService {
     }
 
     async getCropsByUserId(userId: number): Promise<CropReferenceResponse[]> {
-        const response = await http.get(`${this.endpoint}/${userId}`);
+        const response = await http.get(`${this.endpoint}/user/${userId}/reference`);
         return response.data.map(
             (crop: CropReferenceResponse) =>
                 new CropReferenceResponse(
