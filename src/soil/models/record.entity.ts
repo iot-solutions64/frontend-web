@@ -14,6 +14,7 @@ export class Record {
         temperature: number = 0,
         temperatureStatus: string = ''
     ) {
+        this.id = id;
         this.date = date;
         this.humidity = humidity;
         this.humidityStatus = humidityStatus;

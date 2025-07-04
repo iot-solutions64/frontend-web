@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {PropType, ref, watch} from 'vue';
 import { useToast } from 'primevue/usetoast';
-import {CropLightResponse} from "@/soil/models/crop.light.response.entity";
+import {CropLightResponse} from "@/soil/models/crop-light.response.entity";
 
 const props = defineProps({
   visible: Boolean,

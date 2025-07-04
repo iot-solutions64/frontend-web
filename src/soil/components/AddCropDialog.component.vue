@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {computed, PropType, ref, watch} from 'vue';
 import { useToast } from 'primevue/usetoast';
-import { Crop } from "../models/crop.entity.js";
 import TemperatureIcon from "@/shared/custom-icons/Temperature.icon.vue";
 import WaterDropIcon from "@/shared/custom-icons/WaterDrop.icon.vue";
 import {Tank} from "@/irrigation/models/tank.entity";
@@ -49,6 +48,7 @@ const page = ref(1);
 const maxPages = 4;
 const wasConfirmButtonPressed = ref(false);
 
+// No se usa max quantity
 const maxQuantity = ref(0);
 const localVisible = ref(props.visible);
 const toast = useToast();
@@ -100,7 +100,7 @@ const headerSubtitle = computed(() => {
   let pageSubtitle: string;
   switch(pageNumber){
     case 1: pageSubtitle = "Nombre del Cultivo"; break;
-    case 2: pageSubtitle = "Temperatura y Humedad"; break;
+    case 2: pageSubtitle = "Límites de Temperatura y Humedad"; break;
     case 3: pageSubtitle = "Regado Automático"; break;
     case 4: pageSubtitle = "Tanque de Agua"; break;
     default: pageSubtitle = "Página no encontrada"; break;

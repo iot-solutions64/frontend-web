@@ -1,13 +1,14 @@
 import {CropRequest} from "../models/crop.request.entity";
 import http from "@/shared/services/http-common.service";
 import {CropReferenceResponse} from "@/soil/models/crop-reference.response.entity";
-import {CropLightResponse} from "@/soil/models/crop.light.response.entity";
+import {CropLightResponse} from "@/soil/models/crop-light.response.entity";
 import {CropDetailedResponse} from "@/soil/models/crop-detailed.response.entity";
 import {TemperatureResponse} from "@/soil/models/temperature.response.entity";
 import {TemperatureRequest} from "@/soil/models/temperature.request.entity";
 import {HumidityRequest} from "@/soil/models/humidity.request.entity";
 import {HumidityResponse} from "@/soil/models/humidity.response.entity";
 import {TemperatureThresholdRequest} from "@/soil/models/temperature-threshold.request.entity";
+import {HumidityThresholdRequest} from "@/soil/models/humidity-threshold.request.entity";
 
 export class CropService {
     endpoint: string = "/crop"
@@ -127,8 +128,8 @@ export class CropService {
         return String(response.data);
     }
 
-    async patchHumidityThresholdByCropId(cropId: number, humidity: number): Promise<HumidityResponse>{
-        const response = await http.patch(`${this.endpoint}/${cropId}/humidity`, humidity);
+    async patchHumidityThresholdByCropId(cropId: number, humidityThresholdRequest: HumidityThresholdRequest): Promise<HumidityResponse>{
+        const response = await http.patch(`${this.endpoint}/${cropId}/humidity-threshold`, humidityThresholdRequest);
         return new HumidityResponse(response.data.humidity, response.data.humidityMinThreshold, response.data.humidityMaxThreshold, response.data.humidityStatus);
     }
 

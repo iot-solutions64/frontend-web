@@ -1,7 +1,7 @@
 export class TemperatureRequest {
     temperature: number;
 
-    constructor(temperature: 0) {
+    constructor(temperature: number = 0) {
         this.temperature = temperature;
     }
 }

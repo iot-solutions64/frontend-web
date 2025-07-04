@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {ref} from "vue";
-import {CropLightResponse} from "@/soil/models/crop.light.response.entity";
+import {CropLightResponse} from "@/soil/models/crop-light.response.entity";
 
 defineProps({
   items: {
@@ -27,7 +27,7 @@ const irrigationOptions = ref(["On", "Off"]);
       <pv-column header="Acciones">
         <template #body="slotProps">
           <pv-button text icon="pi pi-search" @click="$emit('view', slotProps.data.cropId)" />
-          <pv-button text icon="pi pi-pencil" @click="$emit('edit', slotProps.data)" />
+          <pv-button text icon="pi pi-pencil" @click="$emit('edit', slotProps.data.cropId)" />
           <pv-button text icon="pi pi-trash" @click="$emit('delete', slotProps.data)" />
         </template>
       </pv-column>

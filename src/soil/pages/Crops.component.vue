@@ -6,21 +6,22 @@ import AddCropDialog from '../components/AddCropDialog.component.vue';
 import DeleteCropDialog from '../components/DeleteCropDialog.component.vue';
 import EditCropDialog from '../components/EditCropDialog.component.vue';
 import router from "@/shared/router";
-import {Crop} from "../models/crop.entity.js";
 import DefaultHeader from "@/shared/components/DefaultHeader.component.vue";
-import {CropLightResponse} from "@/soil/models/crop.light.response.entity";
+import {CropLightResponse} from "@/soil/models/crop-light.response.entity";
 import {CropService} from "@/soil/services/crop.service";
 import {useAuthenticationStore} from "@/security/services/authentication.store";
 import {WaterTankService} from "@/irrigation/services/water-tank.service";
 import {CropRequest} from "@/soil/models/crop.request.entity";
 import {Tank} from "@/irrigation/models/tank.entity";
+import {CropDetailedResponse} from "@/soil/models/crop-detailed.response.entity";
+import {HumidityThresholdRequest} from "@/soil/models/humidity-threshold.request.entity";
+import {TemperatureThresholdRequest} from "@/soil/models/temperature-threshold.request.entity";
 
 //Old
-const crops = ref<Crop[]>([]);
 const showAddDialog = ref(false);
 const selectedCropToDelete = ref<CropLightResponse | null>(null);
 const showDeleteDialog = ref(false);
-const cropToEdit = ref(new Crop());
+const cropToEdit = ref(new CropDetailedResponse());
 const showEditDialog = ref(false);
 
 //New
@@ -38,18 +39,39 @@ function viewCrop(id: number) {
   router.push(`/crops/${id}`);
 }
 
-function openEditCropDialog(crop: Crop) {
-  cropToEdit.value = crop;
+async function openEditCropDialog(cropId: number) {
+  cropToEdit.value = await cropService.getDetailedCropById(cropId);
   showEditDialog.value = true;
 }
 
-function editCrop(crop: Crop) {
-  // TODO: Implement the logic to edit the item
-  crop = { ...cropToEdit.value, ...crop };
-  const index = crops.value.findIndex(i => i.id === crop.id);
-  if (index !== -1) {
-    crops.value[index] = { ...crops.value[index], ...crop };
+async function editCrop(editedCrop: CropRequest) {
+  if (!editedCrop) return;
+
+  const original = cropToEdit.value;
+  const cropId = original.cropId;
+
+  // PATCH 1: Temperatura thresholds
+  if (editedCrop.temperatureMinThreshold !== original.temperatureMinThreshold ||
+      editedCrop.temperatureMaxThreshold !== original.temperatureMaxThreshold) {
+    const tempThresholdReq = new TemperatureThresholdRequest(
+        editedCrop.temperatureMinThreshold,
+        editedCrop.temperatureMaxThreshold
+    );
+    await cropService.patchTemperatureThresholdByCropId(cropId, tempThresholdReq);
   }
+
+  // PATCH 2: Humedad thresholds
+  if (editedCrop.humidityMinThreshold !== original.humidityMinThreshold ||
+      editedCrop.humidityMaxThreshold !== original.humidityMaxThreshold) {
+    const humThresholdReq = new HumidityThresholdRequest(
+        editedCrop.humidityMinThreshold,
+        editedCrop.humidityMaxThreshold
+    );
+    await cropService.patchHumidityThresholdByCropId(cropId, humThresholdReq);
+  }
+
+  await getCrops();
+  showEditDialog.value = false;
 }
 
 function openAddCropDialog() {
