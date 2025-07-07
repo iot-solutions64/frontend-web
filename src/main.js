@@ -6,7 +6,6 @@ import App from './App.vue'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
 import {definePreset} from "@primeuix/themes";
-import store from "./shared/store/store.js";
 import router from "./shared/router/index.js";
 // PrimeVue components
 import Button from 'primevue/button';
@@ -23,11 +22,17 @@ import Dialog from 'primevue/dialog';
 import InputNumber from 'primevue/inputnumber';
 import Toast from 'primevue/toast';
 import Chart from 'primevue/chart';
+import ProgressSpinner from 'primevue/progressspinner';
 import Select from "primevue/select";
+import SelectButton from 'primevue/selectbutton';
 // PrimeVue services
 import ToastService from 'primevue/toastservice';
 // PrimeVue directives
 import Tooltip from 'primevue/tooltip';
+import {createPinia} from "pinia";
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
 const blue = definePreset(Aura, {
     semantic: {
@@ -47,7 +52,7 @@ const blue = definePreset(Aura, {
         colorScheme: {
             light: {
                 primary: {
-                    color: "{primary.500}",
+                    backgroundColor: "{primary.500}",
                     contrastColor: "#ffffff",
                     hoverColor: "{primary.600}",
                     activeColor: "{primary.700}",
@@ -55,7 +60,7 @@ const blue = definePreset(Aura, {
                 highlight: {
                     background: "{primary.50}",
                     focusBackground: "{primary.100}",
-                    color: "{primary.700}",
+                    backgroundColor: "{primary.700}",
                     focusColor: "{primary.800}",
                 },
                 surface: {
@@ -85,8 +90,8 @@ app.use(PrimeVue, {
         }
     }
 });
-app.use(store)
 app.use(router)
+app.use(pinia)
 app.component('pv-button', Button)
 app.component('pv-menu', Menu)
 app.component('pv-card', Card)
@@ -101,7 +106,9 @@ app.component('pv-dialog', Dialog)
 app.component('pv-input-number', InputNumber)
 app.component('pv-toast', Toast)
 app.component('pv-chart', Chart)
+app.component('pv-progress-spinner', ProgressSpinner)
 app.component('pv-select', Select)
+app.component('pv-select-button', SelectButton)
 app.use(ToastService)
 app.directive('tooltip', Tooltip);
 app.mount('#app')

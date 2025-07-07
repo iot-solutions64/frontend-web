@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import store from '../store/store.js'
 import {useRouter} from "vue-router";
 import {ref} from "vue";
-import { nextTick } from 'vue'
+import {useAuthenticationStore} from "../../security/services/authentication.store";
 
 const router = useRouter()
 const menu = ref()
+const authenticationStore = useAuthenticationStore();
 
 const items = [
   {
@@ -21,71 +21,67 @@ const items = [
     command: () => router.push('/systems')
   },
   {
-    label: 'Cerrar sesión',
+    label: 'Salir',
     icon: 'pi pi-sign-out',
-    command: () => { logout(); }
+    command: () => { logout() }
   }
 ]
 
-const toggle = (event) => {
+const toggle = (event: any) => {
   menu.value.toggle(event);
 };
 
 const logout = () => {
-  store.dispatch('logout').then(() => {
-    nextTick(() => {
-      router.push('/login');
-    })
-  })
+  authenticationStore.signOut();
 }
 
 </script>
 
 <template>
-  <header>
-    <nav class="nav-container" id="navbar">
-      <div class="nav-logo">
-        <img src="/assets/images/hydrosmart-logo.png" width="50px" height="50px" alt="software logo" />
-        <p>HydroSmart</p>
+  <nav id="navbar">
+    <div class="nav-logo">
+      <img src="/assets/images/hydrosmart-logo.png" width="50px" height="50px" alt="HydroSmart Logo"/>
+      <h5>HydroSmart</h5>
+    </div>
+    <div class="desktop-menu">
+      <div class="nav-links">
+        <router-link to="/crops">Cultivos</router-link>
+        <router-link to="/water">Gestión de agua</router-link>
+        <router-link to="/systems">Sistemas</router-link>
       </div>
-      <div class="desktop-menu">
-        <ul class="nav-sections">
-          <li><router-link to="/crops">Cultivos</router-link></li>
-          <li><router-link to="/water">Gestión de agua</router-link></li>
-          <li><router-link to="/systems">Sistemas</router-link></li>
-        </ul>
-        <pv-button @click="logout"
-                   text
-                   icon="pi pi-sign-out"
-                   style="color: white; font-size: 20px;"
-                   aria-label="log out"/>
-      </div>
-      <div class="mobile-menu">
-        <pv-button icon="pi pi-bars"
-                   text
-                   style="color: white; font-size: 20px;"
-                   @click="toggle"/>
-        <pv-menu ref="menu"
-                 id="overlay_menu"
-                 :model="items"
-                 :popup="true"
-                 />
-      </div>
-    </nav>
-  </header>
+      <pv-button text label="Salir" aria-label="log out" @click="logout"
+                 icon="pi pi-sign-out" iconPos="right"/>
+    </div>
+    <div class="mobile-menu">
+      <pv-button icon="pi pi-bars" text @click="toggle"/>
+      <pv-menu ref="menu" id="overlay_menu" :model="items" :popup="true"/>
+    </div>
+  </nav>
 </template>
 
 <style scoped>
-.nav-container {
-  display: flex;
+nav{
   height: 75px;
+  display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 0 1rem 0 1rem;
+  color: var(--text-color-inverted);
   background-color: var(--primary-color-dark);
 }
 
+.nav-logo {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.nav-logo>img {
+  margin: 10px;
+}
+
 .desktop-menu {
+  height: 100%;
   display: flex;
   align-items: center;
 }
@@ -94,36 +90,38 @@ const logout = () => {
   display: none;
 }
 
-.nav-sections {
+.nav-links {
+  height: 100%;
   display: flex;
-  gap: 30px;
-  list-style: none;
   margin-right: 50px;
+  list-style: none;
 }
 
-.nav-sections li a {
-  text-decoration: none;
-  font-weight: 100;
-  font-size: 24px;
-  color: var(--background-color);
-}
-
-.nav-sections li:hover {
-  transform: scale(1.1);
-}
-
-.nav-logo {
+.nav-links>a {
+  height: 100%;
   display: flex;
   align-items: center;
+  padding: 0 1rem 0 1rem;
+  font-size: 20px;
+  text-decoration: none;
+  color: var(--text-color-inverted);
+  transition: background-color 0.3s ease;
 }
 
-.nav-logo img {
-  margin: 10px;
+.nav-links>a:hover {
+  background-color: var(--primary-color-darker);
 }
 
-.nav-logo p {
-  font-size: 24px;
-  color: var(--background-color);
+.p-button{
+  font-size: 20px;
+  background-color: transparent;
+  color: var(--text-color-inverted);
+  transition: background-color 0.2s ease;
+}
+
+.p-button:hover {
+  background-color: red !important;
+  color: var(--text-color-inverted) !important;
 }
 
 @media (max-width: 768px) {
@@ -132,6 +130,10 @@ const logout = () => {
   }
   .mobile-menu {
     display: block;
+  }
+
+  .p-button:hover{
+    background-color: var(--primary-color-darker) !important;
   }
 }
 

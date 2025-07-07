@@ -19,7 +19,7 @@
   bottom: 2rem;
   right: 2rem;
   background-color: var(--primary-color);
-  color: var(--background-color);
+  color: var(--text-color-inverted);
   z-index: 1000;
 }
 </style>

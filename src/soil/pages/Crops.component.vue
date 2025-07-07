@@ -1,95 +1,126 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import {onMounted, ref} from 'vue';
 import CropTable from '../components/CropTable.component.vue';
 import AddButton from '../../shared/components/AddButton.component.vue';
 import AddCropDialog from '../components/AddCropDialog.component.vue';
 import DeleteCropDialog from '../components/DeleteCropDialog.component.vue';
 import EditCropDialog from '../components/EditCropDialog.component.vue';
-import router from "../../shared/router/index.js";
-import {Crop} from "../models/crop.entity.js";
-import {Tank} from "../../irrigation/models/tank.entity";
+import router from "@/shared/router";
+import DefaultHeader from "@/shared/components/DefaultHeader.component.vue";
+import {CropLightResponse} from "@/soil/models/crop-light.response.entity";
+import {CropService} from "@/soil/services/crop.service";
+import {useAuthenticationStore} from "@/security/services/authentication.store";
+import {WaterTankService} from "@/irrigation/services/water-tank.service";
+import {CropRequest} from "@/soil/models/crop.request.entity";
+import {CropDetailedResponse} from "@/soil/models/crop-detailed.response.entity";
+import {HumidityThresholdRequest} from "@/soil/models/humidity-threshold.request.entity";
+import {TemperatureThresholdRequest} from "@/soil/models/temperature-threshold.request.entity";
+import {WaterTankResponse} from "@/irrigation/models/water-tank.response.entity";
 
-const crops = ref([]);
-const tanks = ref([]);
 const showAddDialog = ref(false);
-const cropToDelete = ref(new Crop());
+const selectedCropToDelete = ref<CropLightResponse | null>(null);
 const showDeleteDialog = ref(false);
-const cropToEdit = ref(new Crop());
+const cropToEdit = ref(new CropDetailedResponse());
 const showEditDialog = ref(false);
 
-onMounted(() => {
-  // TODO: Implement the logic to fetch crops from a service
-  crops.value = [
-      new Crop(1, 'Recinto A', 1000, true, 1),
-      new Crop(2, 'Recinto B', 800, false, 1),
-  ];
+//New
+const cropList = ref<CropLightResponse[]>([]);
+const cropService = new CropService();
+const tankList = ref<WaterTankResponse[]>([]);
+const waterTankService = new WaterTankService();
 
-  // TODO: Implement the logic to fetch tanks from a service
-  tanks.value = [
-    new Tank(1, 'Tanque A', 1000, 2000),
-    new Tank(2, 'Tanque B', 800, 1000),
-  ]
+onMounted(() => {
+  getCrops();
+  getTanks();
 });
 
 function viewCrop(id: number) {
   router.push(`/crops/${id}`);
 }
 
-function openEditCropDialog(crop: Crop) {
-  cropToEdit.value = crop;
+async function openEditCropDialog(cropId: number) {
+  cropToEdit.value = await cropService.getDetailedCropById(cropId);
   showEditDialog.value = true;
 }
 
-function editCrop(crop: Crop) {
-  // TODO: Implement the logic to edit the item
-  crop = { ...cropToEdit.value, ...crop };
-  const index = crops.value.findIndex(i => i.id === crop.id);
-  if (index !== -1) {
-    crops.value[index] = { ...crops.value[index], ...crop };
+async function editCrop(editedCrop: CropRequest) {
+  if (!editedCrop) return;
+
+  const original = cropToEdit.value;
+  const cropId = original.cropId;
+
+  // PATCH 1: Temperatura thresholds
+  if (editedCrop.temperatureMinThreshold !== original.temperatureMinThreshold ||
+      editedCrop.temperatureMaxThreshold !== original.temperatureMaxThreshold) {
+    const tempThresholdReq = new TemperatureThresholdRequest(
+        editedCrop.temperatureMinThreshold,
+        editedCrop.temperatureMaxThreshold
+    );
+    await cropService.patchTemperatureThresholdByCropId(cropId, tempThresholdReq);
   }
-}
 
-function openDeleteCropDialog(crop: Crop) {
-  cropToDelete.value = crop;
-  showDeleteDialog.value = true;
-}
+  // PATCH 2: Humedad thresholds
+  if (editedCrop.humidityMinThreshold !== original.humidityMinThreshold ||
+      editedCrop.humidityMaxThreshold !== original.humidityMaxThreshold) {
+    const humThresholdReq = new HumidityThresholdRequest(
+        editedCrop.humidityMinThreshold,
+        editedCrop.humidityMaxThreshold
+    );
+    await cropService.patchHumidityThresholdByCropId(cropId, humThresholdReq);
+  }
 
-function deleteCrop(id: number) {
-  // TODO: Implement the logic to delete the item
-  crops.value = crops.value.filter(i => i.id !== id);
+  await getCrops();
+  showEditDialog.value = false;
 }
 
 function openAddCropDialog() {
   showAddDialog.value = true;
 }
 
-function saveCrop(newCrop) {
-  // TODO: Implement the logic to save the new item
-  newCrop.id = crops.value.length + 1;
-  crops.value.push(newCrop);
+async function saveCrop(newCrop: CropRequest) {
+  await cropService.createCrop(newCrop);
+  await getCrops();
+  await getTanks();
+}
+
+//New
+async function getCrops(){
+  const authenticationStore = useAuthenticationStore();
+  const userId: number = authenticationStore.userId;
+  cropList.value = await cropService.getLightCropsByUserId(userId);
+}
+
+async function getTanks(){
+  const authenticationStore = useAuthenticationStore();
+  const userId: number = authenticationStore.userId;
+  const response = await waterTankService.getAllWaterTanksByUserId(userId);
+  tankList.value = response.map(tank => new WaterTankResponse(tank.id, tank.name, tank.maxWaterCapacity, tank.waterAmountRemaining, tank.status));
+}
+
+function openDeleteCropDialog(crop: CropLightResponse) {
+  selectedCropToDelete.value = crop;
+  showDeleteDialog.value = true;
+}
+
+async function deleteCrop(id: number) {
+  await cropService.deleteByCropId(id);
+  await getCrops();
+  await getTanks();
 }
 </script>
 
 <template>
-  <h2>Cultivos</h2>
-  <CropTable
-      :items="crops"
-      @view="viewCrop"
-      @edit="openEditCropDialog"
-      @delete="openDeleteCropDialog"
-  />
-  <AddCropDialog v-model:visible="showAddDialog" :tanks="tanks" @save="saveCrop" />
-  <DeleteCropDialog v-model:visible="showDeleteDialog"
-                    :crop="cropToDelete"
-                    @delete="deleteCrop" />
-  <EditCropDialog
-      v-model:visible="showEditDialog"
-      :crop="cropToEdit"
-      :tanks="tanks"
-      @save="editCrop"
-  />
+  <DefaultHeader title="Cultivos" :show-back-button="false"/>
+
+  <CropTable :items="cropList" @view="viewCrop" @edit="openEditCropDialog" @delete="openDeleteCropDialog"/>
+
+  <AddCropDialog v-model:visible="showAddDialog" :tanks="tankList" @save="saveCrop"/>
+  <DeleteCropDialog v-model:visible="showDeleteDialog" :crop="selectedCropToDelete" @delete="deleteCrop" />
+  <EditCropDialog v-model:visible="showEditDialog" :crop="cropToEdit" :tanks="tankList" @save="editCrop"/>
+
   <pv-toast position="bottom-right"/>
   <AddButton @click="openAddCropDialog"/>
+
 </template>
 
 <style scoped>

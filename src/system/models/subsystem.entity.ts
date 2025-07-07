@@ -9,7 +9,7 @@ export class Subsystem {
     constructor(
         id: number = 0,
         name: string = '',
-        value: number = 0,
+        value: number | null = 0,
         status: string = '',
         active: boolean = false
     ) {

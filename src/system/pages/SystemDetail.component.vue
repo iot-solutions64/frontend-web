@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {System} from "../models/system.entity";
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import {Subsystem} from "../models/subsystem.entity";
 import DeleteSystemDialog from "../components/DeleteSystemDialog.component.vue";
+import BatteryIcon from "../../shared/custom-icons/Battery.icon.vue";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const systemId = ref(0);
 const system = ref(new System());
@@ -50,22 +52,13 @@ function goToEditSystem(id: number) {
 </script>
 
 <template>
-  <div class="flex align-items-center m-3 mb-6">
-    <pv-button icon="pi pi-arrow-left"
-               @click="router.back()"
-               aria-label="Volver"
-               class="mr-2"/>
-    <h3 class="m-0 text-center flex-grow-1">{{ system.name }}</h3>
-  </div>
+  <DefaultHeader :title="system.name" :show-back-button="true"/>
   <div class="flex flex-column gap-5 justify-content-center align-items-center mb-5">
     <pv-card>
       <template #content>
         <div class="flex flex-row gap-1 xl:gap-5 justify-content-around align-items-center">
-          <div id="battery-icon" class="flex justify-content-center align-items-center"
-               :style="{backgroundColor: getBatteryColor(system.batteryLevel)}">
-            <img src="/assets/icons/battery.svg" alt="battery" style="width: 40px; height: 40px;"/>
-          </div>
-          <div id="battery-data">
+          <BatteryIcon :background-color="getBatteryColor(system.batteryLevel)" height="70px" width="70px"/>
+          <div class="battery-data">
             <p>Batería</p>
             <p>{{ system.batteryLevel }}%</p>
           </div>
@@ -103,18 +96,14 @@ function goToEditSystem(id: number) {
 </template>
 
 <style scoped>
-#battery-icon {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-}
 
-#battery-data p {
+
+.battery-data p {
   margin: 0;
   text-align: center;
 }
 
-#battery-data p:nth-child(2) {
+.battery-data p:nth-child(2) {
   font-size: 25px;
   font-weight: 500;
 }

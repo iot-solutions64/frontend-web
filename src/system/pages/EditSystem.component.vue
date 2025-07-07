@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {System} from "../models/system.entity";
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import {Subsystem} from "../models/subsystem.entity";
+import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const systemId = ref(0);
 const system = ref(new System());
@@ -48,12 +49,7 @@ function saveChanges() {
 </script>
 
 <template>
-  <div class="flex align-items-center m-3 mb-6">
-    <pv-button icon="pi pi-arrow-left"
-               @click="router.back()"
-               aria-label="Volver"
-               class="mr-2"/>
-  </div>
+  <DefaultHeader title="Editar Sistema" :show-back-button="true"/>
   <div class="flex flex-column gap-5 justify-content-center align-items-center mb-5">
     <div class="flex flex-column w-10 md:w-8 lg:w-5 mx-auto text-center">
       <label for="name" class="name-label mb-2">Nombre</label>

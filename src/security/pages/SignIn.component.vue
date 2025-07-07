@@ -1,33 +1,36 @@
-<script setup>
-import { ref } from 'vue';
-import {AuthenticationService} from "../services/authentication.service.js";
-import router from "../../shared/router/index.js";
-import store from "../../shared/store/store.js";
-import {LoginResponse} from "../models/login-response.entity.js";
+<script setup lang="ts">
+import {computed, ref} from 'vue';
+import {useAuthenticationStore} from "../services/authentication.store.js";
+import {SignInRequest} from "../models/sign-in.request.entity.js";
+import {ResponseState} from "@/shared/models/response-states.enum";
 
 const username = ref("");
 const password = ref("");
-const error = ref(false);
-const authenticationService = new AuthenticationService();
+const isSignInSuccessful = ref(ResponseState.NOT_EXECUTED);
 
-const login = async () => {
-  error.value = false;
-  if (!username.value || !password.value) {
-    error.value = true;
+const showSignInComponent = computed(() => {
+  return ((isSignInSuccessful.value === ResponseState.NOT_EXECUTED) || (isSignInSuccessful.value === ResponseState.FAILURE));
+});
+
+const error = computed(() => {
+  if(isSignInSuccessful.value === ResponseState.FAILURE) {
+    if(username.value === "" || password.value === "") return "Datos incompletos";
+    else return "Nombre y/o usuario incorrectos";
+  }
+  else return "";
+});
+
+async function OnSignIn() {
+  if (username.value === "" || password.value === "") {
+    isSignInSuccessful.value = ResponseState.FAILURE;
     return;
   }
-  try {
-    const response = await authenticationService.signIn(username.value, password.value)
-    const loginResponse = LoginResponse.fromJson(response.data);
-    await store.dispatch('login', {
-      token: loginResponse.token,
-      userId: loginResponse.userId
-    });
-    await router.push('/crops');
-  } catch (e) {
-    error.value = true;
-  }
-};
+  isSignInSuccessful.value = ResponseState.LOADING;
+  let authenticationStore = useAuthenticationStore();
+  const signInRequest = new SignInRequest(username.value, password.value);
+  const response = await authenticationStore.signIn(signInRequest);
+  (response)? isSignInSuccessful.value = ResponseState.SUCCESSFUL : isSignInSuccessful.value = ResponseState.FAILURE;
+}
 </script>
 
 <template>
@@ -36,10 +39,10 @@ const login = async () => {
       <img src="/assets/images/hydrosmart-logo.png" style="width: 350px; height: 350px;" alt="software logo" />
     </div>
     <div class="right">
-      <pv-card class="login-card" style="width: 550px; height: 560px;">
+      <pv-card class="login-card" style="width: 550px; height: 560px;" v-if="showSignInComponent">
         <template #title>
           <h3>Iniciar Sesión</h3>
-          <p v-if="error">Usuario o contraseña incorrectos</p>
+          <p v-if="error !== ''">{{error}}</p>
         </template>
         <template #content>
           <div class="login-form">
@@ -66,7 +69,7 @@ const login = async () => {
                 <label for="password">Contraseña</label>
               </pv-ifta-label>
             </div>
-            <pv-button @click="login" label="Acceder" style="margin: 0 auto; width: 60%;" />
+            <pv-button @click="OnSignIn" label="Acceder" style="margin: 0 auto; width: 60%;" />
             <router-link to="/signup"
                          style="text-decoration: none; color:var(--text-color);">
               ¿No tienes cuenta? <u>Regístrate aquí</u>
@@ -74,6 +77,10 @@ const login = async () => {
           </div>
         </template>
       </pv-card>
+      <div style="width: 550px; height: 560px; display: flex; align-items: center; justify-content: center" v-else>
+        <pv-progress-spinner style="width: 50px; height: 50px" strokeWidth="8" fill="transparent"
+                             animationDuration=".5s" aria-label="Custom ProgressSpinner"/>
+      </div>
     </div>
   </div>
 </template>
