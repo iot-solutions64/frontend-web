@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {System} from "../models/system.entity";
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import {Subsystem} from "../models/subsystem.entity";
 import DeleteSystemDialog from "../components/DeleteSystemDialog.component.vue";
 import BatteryIcon from "../../shared/custom-icons/Battery.icon.vue";

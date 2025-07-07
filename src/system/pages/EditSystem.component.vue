@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue";
 import {System} from "../models/system.entity";
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import {Subsystem} from "../models/subsystem.entity";
 import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 

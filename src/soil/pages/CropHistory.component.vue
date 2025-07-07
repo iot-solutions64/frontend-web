@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import {computed, onMounted, ref} from "vue";
 import {Record} from "../models/record.entity";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";
@@ -8,8 +8,8 @@ import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 
 const cropId = ref(0);
 const isShortHistory = ref(false);
-const history = ref([]);
-const limitedHistory = ref([]);
+const history = ref<Record[]>([]);
+const limitedHistory = ref<Record[]>([]);
 onMounted(() => {
   cropId.value = Number(router.currentRoute.value.params.id);
   isShortHistory.value = router.currentRoute.value.fullPath.includes('short');
@@ -53,8 +53,13 @@ onMounted(() => {
   limitedHistory.value = (isShortHistory.value ? history.value.slice(-30) : history.value).slice().reverse();
 });
 
-const getHumidityTitle = (key: string) => HUMIDITY_SUGGESTIONS[key]?.title ?? key;
-const getTemperatureTitle = (key: string) => TEMPERATURE_SUGGESTIONS[key]?.title ?? key;
+function getHumidityTitle(key: string) {
+  return key in HUMIDITY_SUGGESTIONS ? HUMIDITY_SUGGESTIONS[key as keyof typeof HUMIDITY_SUGGESTIONS].title : key;
+}
+
+function getTemperatureTitle(key: string) {
+  return key in TEMPERATURE_SUGGESTIONS ? TEMPERATURE_SUGGESTIONS[key as keyof typeof TEMPERATURE_SUGGESTIONS].title : key;
+}
 
 const title = computed(() => isShortHistory ? 'Historial de cultivo' : 'Historial detallado de cultivo');
 const subtitle = computed(() => isShortHistory ? 'Datos de los últimos 30 días (promedio diario)' : 'Datos completos (promedio diario)');

@@ -1,21 +1,29 @@
 <script setup lang="ts">
-import {onMounted, ref} from 'vue';
-import router from "../../shared/router/index.js";
+import { onMounted, ref } from 'vue';
+import router from "../../shared/router";
 import WaterDropIcon from "../../shared/custom-icons/WaterDrop.icon.vue";
-
-defineOptions({
-  name: "WaterTankReviewCard"
-})
+import { useAuthenticationStore } from "@/security/services/authentication.store";
+import { WaterTankService } from "@/irrigation/services/water-tank.service";
+import { WaterTankResponse } from "@/irrigation/models/water-tank.response.entity";
 
 const remainingLiters = ref(0);
 const totalLiters = ref(0);
 const resultMessage = ref('');
 
-onMounted(() => {
-  // TODO: Implement the logic to fetch items from a service
-  remainingLiters.value = 15000;
-  totalLiters.value = 20000;
-  resultMessage.value = 'El agua restante es suficiente para el riego.';
+const auth = useAuthenticationStore();
+const waterTankService = new WaterTankService();
+
+onMounted(async () => {
+  const userId = auth.userId;
+  const tanks: WaterTankResponse[] = await waterTankService.getAllWaterTanksByUserId(userId);
+
+  remainingLiters.value = tanks.reduce((sum, t) => sum + t.waterAmountRemaining, 0);
+  totalLiters.value = tanks.reduce((sum, t) => sum + t.maxWaterCapacity, 0);
+
+  const porcentaje = totalLiters.value > 0 ? (remainingLiters.value / totalLiters.value) : 0;
+  resultMessage.value = porcentaje >= 0.1
+      ? 'El agua restante es suficiente para el riego.'
+      : 'El agua restante es insuficiente, considere rellenar los tanques.';
 });
 
 function goToTanks() {

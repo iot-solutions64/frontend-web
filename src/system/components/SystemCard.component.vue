@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {System} from "../models/system.entity.js";
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import BatteryIcon from "../../shared/custom-icons/Battery.icon.vue";
 
 defineOptions({
@@ -8,7 +8,10 @@ defineOptions({
 });
 
 defineProps({
-  system: System
+  system: {
+    type: System,
+    required: true
+  }
 });
 
 function goToSystem(id: number) {
@@ -70,12 +73,6 @@ function getBatteryColor(percentage: number) {
 .table-header {
   padding: 8px;
   border-bottom: 2px solid rgba(85, 85, 85, 0.11);
-}
-
-#battery-icon {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
 }
 
 #battery-data p {

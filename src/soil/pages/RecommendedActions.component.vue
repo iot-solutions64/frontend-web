@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import {onMounted, ref} from "vue";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";
 import {TEMPERATURE_SUGGESTIONS} from "../constants/temperature-suggestions.constant";
@@ -8,7 +8,7 @@ import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
 const id = ref(0);
 const isHumidity = ref(false);
 const status = ref('');
-const suggestions = ref([]);
+const suggestions = ref<{title: string, url: string}[]>([]);
 onMounted(() => {
   id.value = Number(router.currentRoute.value.params.id);
   isHumidity.value = router.currentRoute.value.fullPath.includes('humidity');
@@ -39,7 +39,7 @@ onMounted(() => {
         status.value = 'DRY';
         break;
     }
-    suggestions.value = HUMIDITY_SUGGESTIONS[status.value].videos;
+    suggestions.value = HUMIDITY_SUGGESTIONS[status.value as keyof typeof HUMIDITY_SUGGESTIONS].videos;
   } else {
     switch(id.value) {
       case 6:
@@ -49,12 +49,12 @@ onMounted(() => {
         status.value = 'FREEZING';
         break;
     }
-    suggestions.value = TEMPERATURE_SUGGESTIONS[status.value].videos;
+    suggestions.value = TEMPERATURE_SUGGESTIONS[status.value as keyof typeof TEMPERATURE_SUGGESTIONS].videos;
   }
 })
 
 const getYoutubeId = (url: string) => {
-  const match = url.match(/(?:youtube\.com.*(?:\?|&)v=|youtu\.be\/)([^&\n?#]+)/);
+  const match = url.match(/(?:youtube\.com.*[?&]v=|youtu\.be\/)([^&\n?#]+)/);
   return match ? match[1] : '';
 };
 

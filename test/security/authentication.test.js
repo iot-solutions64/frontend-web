@@ -1,6 +1,6 @@
 import { expect, test, beforeEach } from "vitest";
-import { AuthenticationService } from "../../src/security/services/authentication.service.js";
-import {LoginResponse} from "../../src/security/models/login-response.entity.js";
+import { AuthenticationService } from "../../src/security/services/authentication.service.ts";
+import {LoginResponse} from "@/security/models/login-response.entity.ts";
 
 // Mock de localStorage
 beforeEach(() => {

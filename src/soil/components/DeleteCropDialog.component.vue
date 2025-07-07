@@ -1,10 +1,50 @@
+<script setup lang="ts">
+import {PropType, ref, watch} from 'vue';
+import { useToast } from 'primevue/usetoast';
+import {CropLightResponse} from "@/soil/models/crop-light.response.entity";
+
+const props = defineProps({
+  visible: Boolean,
+  crop: {
+    type: Object as PropType<CropLightResponse | null>,
+    required: true
+  }
+});
+
+const emit = defineEmits(['update:visible', 'delete']);
+const localVisible = ref(props.visible);
+const toast = useToast();
+
+watch(() => props.visible, (val) => {
+  localVisible.value = val;
+});
+
+watch(localVisible, (val) => {
+  emit('update:visible', val);
+});
+
+const closeDialog = () => {
+  localVisible.value = false;
+};
+
+const handleDelete = () => {
+  if (!props.crop) {
+    toast.add({ severity: 'error', summary: 'Error', detail: 'No se ha seleccionado un cultivo para eliminar.', life: 3000 });
+    return;
+  }
+  emit('delete', props.crop.cropId);
+  closeDialog();
+  toast.add({ severity: 'success', summary: 'Cultivo eliminado', detail: `El cultivo ${props.crop.cropName} ha sido eliminado.`, life: 3000 });
+};
+</script>
+
 <template>
   <pv-dialog v-model:visible="localVisible" modal :style="{ width: '25rem' }">
     <template #header>
       <h5>Eliminar cultivo</h5>
     </template>
     <main>
-      <p>¿Estás seguro de que deseas eliminar este cultivo? Esta acción no se puede deshacer.</p>
+      <p>¿Estás seguro de que deseas <strong>eliminar</strong> este cultivo? Esta acción no se puede deshacer.</p>
     </main>
     <template #footer>
       <div class="footer">
@@ -26,34 +66,3 @@ h5{
   gap: 1rem;
 }
 </style>
-
-<script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useToast } from 'primevue/usetoast';
-import {Crop} from "../models/crop.entity.js";
-
-const props = defineProps({
-  visible: Boolean,
-  crop: Crop,
-});
-const emit = defineEmits(['update:visible', 'delete']);
-const localVisible = ref(props.visible);
-const toast = useToast();
-
-watch(() => props.visible, (val) => {
-  localVisible.value = val;
-});
-watch(localVisible, (val) => {
-  emit('update:visible', val);
-});
-
-const closeDialog = () => {
-  localVisible.value = false;
-};
-
-const handleDelete = () => {
-  emit('delete', props.crop.id);
-  closeDialog();
-  toast.add({ severity: 'success', summary: 'Cultivo eliminado', detail: `El cultivo ${props.crop.name} ha sido eliminado.`, life: 3000 });
-};
-</script>

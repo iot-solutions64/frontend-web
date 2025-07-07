@@ -1,23 +1,32 @@
 <script setup lang="ts">
-import router from "../../shared/router/index.js";
+import router from "../../shared/router";
 import { onMounted, ref } from "vue";
-import { Temperature } from "../models/temperature.entity";
-import { Humidity } from "../models/humidity.entity";
 import {HUMIDITY_SUGGESTIONS} from "../constants/humidity-suggestions.constant";
 import {TEMPERATURE_SUGGESTIONS} from "../constants/temperature-suggestions.constant";
-import {System} from "../../system/models/system.entity";
+import {System} from "@/system/models/system.entity";
 import DefaultHeader from "../../shared/components/DefaultHeader.component.vue";
+import WaterDropIcon from "@/shared/custom-icons/WaterDrop.icon.vue";
+import TemperatureIcon from "@/shared/custom-icons/Temperature.icon.vue";
+import {CropService} from "@/soil/services/crop.service";
+import {HumidityResponse} from "@/soil/models/humidity.response.entity";
+import {TemperatureResponse} from "@/soil/models/temperature.response.entity";
 
 const cropId = ref(0);
-const temperature = ref(new Temperature());
-const humidity = ref(new Humidity());
+const cropService = new CropService();
+const temperature = ref<TemperatureResponse | null>(null);
+const humidity = ref<HumidityResponse | null>(null);
 
 onMounted(() => {
   cropId.value = Number(router.currentRoute.value.params.id);
-  // TODO: Implement the logic to fetch temperature & humidity data from a service
-  humidity.value = new Humidity(1, 70, 60, 30, "FAVORABLE");
-  temperature.value = new Temperature(1, 65, 60, 30, "UNFAVORABLE_OVER");
+  console.log(cropId.value);
+  setCropData();
 });
+
+async function setCropData(){
+  const foundCrop = await cropService.getDetailedCropById(cropId.value);
+  humidity.value = new HumidityResponse(foundCrop.humidity, foundCrop.humidityMinThreshold, foundCrop.humidityMaxThreshold, foundCrop.humidityStatus);
+  temperature.value = new TemperatureResponse(foundCrop.temperature, foundCrop.temperatureMinThreshold, foundCrop.temperatureMaxThreshold, foundCrop.temperatureStatus);
+}
 
 function goToTemperatureActions(temperatureId: number) {
   router.push(`/temperature/${temperatureId}/actions`);
@@ -43,7 +52,7 @@ function goToCropSystem() {
 </script>
 
 <template>
-  <DefaultHeader title="Detalle del Proyecto" :show-back-button="true"/>
+  <DefaultHeader title="Detalle del Cultivo" :show-back-button="true"/>
   <main>
     <h4 class="title">Información de los sensores</h4>
     <article class="w-10 lg:w-8 mx-auto p-3 border-round-xl shadow-2 surface-card m-5">
@@ -56,51 +65,47 @@ function goToCropSystem() {
             <th>Recomendaciones</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td class="sensor-column">
-              <div id="water-drop-icon">
-                <img src="/assets/icons/water_drop.svg" alt="Humedad" style="width: 40px; height: 40px;" />
-              </div>
-              <p id="humidity-text"><b>Humedad</b></p>
-            </td>
-            <td>
-              <p>{{ humidity.humidity }}%</p>
-            </td>
-            <td v-tooltip="HUMIDITY_SUGGESTIONS[humidity.status]?.message">
-              <p>{{ HUMIDITY_SUGGESTIONS[humidity.status]?.title }}</p>
-            </td>
-            <td>
-              <pv-button
-                  label="Ver acciones"
-                  icon="pi pi-search"
-                  @click="goToHumidityActions(HUMIDITY_SUGGESTIONS[humidity.status]?.id)"
-                  :disabled="humidity.status === 'FAVORABLE'"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td class="sensor-column">
-              <div id="thermostat-icon">
-                <img src="/assets/icons/thermostat.svg" alt="Temperatura" style="width: 40px; height: 40px;" />
-              </div>
-              <p id="temperature-text"><b>Temperatura</b></p>
-            </td>
-            <td>
-              <p>{{ temperature.temperature }}°C</p>
-            </td>
-            <td v-tooltip="TEMPERATURE_SUGGESTIONS[temperature.status]?.message">
-              <p>{{ TEMPERATURE_SUGGESTIONS[temperature.status]?.title }}</p>
-            </td>
-            <td>
-              <pv-button
-                  label="Ver acciones"
-                  icon="pi pi-search"
-                  @click="goToTemperatureActions(TEMPERATURE_SUGGESTIONS[temperature.status]?.id)"
-                  :disabled="temperature.status === 'FAVORABLE'"
-              />
-            </td>
-          </tr>
+        <tbody v-if="humidity && temperature">
+        <tr>
+          <td class="sensor-column">
+            <WaterDropIcon height="70px" width="70px"/>
+            <p id="humidity-text"><b>Humedad</b></p>
+          </td>
+          <td>
+            <p>{{ humidity.humidity }}%</p>
+          </td>
+          <td v-tooltip="HUMIDITY_SUGGESTIONS[humidity.humidityStatus as keyof typeof HUMIDITY_SUGGESTIONS]?.message">
+            <p>{{ HUMIDITY_SUGGESTIONS[humidity.humidityStatus as keyof typeof HUMIDITY_SUGGESTIONS]?.title }}</p>
+          </td>
+          <td>
+            <pv-button
+                label="Ver acciones"
+                icon="pi pi-search"
+                @click="goToHumidityActions(HUMIDITY_SUGGESTIONS[humidity.humidityStatus as keyof typeof HUMIDITY_SUGGESTIONS]?.id)"
+                :disabled="humidity.humidityStatus === 'FAVORABLE'"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="sensor-column">
+            <TemperatureIcon height="70px" width="70px"/>
+            <p id="temperature-text"><b>Temperatura</b></p>
+          </td>
+          <td>
+            <p>{{ temperature.temperature }}°C</p>
+          </td>
+          <td v-tooltip="TEMPERATURE_SUGGESTIONS[temperature.temperatureStatus as keyof typeof TEMPERATURE_SUGGESTIONS]?.message">
+            <p>{{ TEMPERATURE_SUGGESTIONS[temperature.temperatureStatus as keyof typeof TEMPERATURE_SUGGESTIONS]?.title }}</p>
+          </td>
+          <td>
+            <pv-button
+                label="Ver acciones"
+                icon="pi pi-search"
+                @click="goToTemperatureActions(TEMPERATURE_SUGGESTIONS[temperature.temperatureStatus as keyof typeof TEMPERATURE_SUGGESTIONS]?.id)"
+                :disabled="temperature.temperatureStatus === 'FAVORABLE'"
+            />
+          </td>
+        </tr>
         </tbody>
       </table>
     </article>
@@ -160,30 +165,5 @@ th{
   grid-template-columns: 1fr 2fr;
   grid-column-gap: 1rem;
   text-align: left;
-}
-
-#water-drop-icon, #thermostat-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#water-drop-icon {
-  background-color: var(--primary-color);
-}
-
-#thermostat-icon {
-  background-color: #E1AF43;
-}
-
-#humidity-text{
-  color: var(--primary-color);
-}
-
-#temperature-text{
-  color: #E1AF43;
 }
 </style>
