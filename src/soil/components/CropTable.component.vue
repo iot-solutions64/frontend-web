@@ -21,7 +21,7 @@ const irrigationOptions = ref(["On", "Off"]);
       <pv-column field="waterAmountRemaining" header="Cantidad Restante de Agua"></pv-column>
       <pv-column header="Riego Automático">
         <template #body="slotProps">
-          <pv-select-button v-model="slotProps.data.autoIrrigation" :options="irrigationOptions" :allow-empty="false" default-value="Off"/>
+          <pv-select-button v-model="slotProps.data.autoIrrigation" :options="irrigationOptions" :allow-empty="false" default-value="On"/>
         </template>
       </pv-column>
       <pv-column header="Acciones">
